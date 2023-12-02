@@ -1,0 +1,386 @@
+import {StyleSheet} from 'react-native';
+import {COLORS, FONTS, SIZES} from '../../constants';
+
+export default StyleSheet.create({
+  // ========== header =================
+  header_bg: {
+    width: SIZES.width,
+    // height: SIZES.height * .4,
+    backgroundColor: COLORS.white,
+    // borderBottomLeftRadius: 20,
+    // borderBottomRightRadius: 20,
+    overflow: 'hidden',
+    alignItems: 'center',
+    marginTop: SIZES.height * -0.025,
+  },
+
+  header_row: {
+    width: SIZES.width,
+    height: SIZES.height * 0.25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent: 'space-between',
+    // paddingHorizontal: SIZES.width * .05,
+    // paddingTop: SIZES.height * .01,
+    // borderWidth: 1,
+  },
+
+  back_btn: {
+    width: SIZES.width * 0.1,
+    height: SIZES.height * 0.05,
+    // borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: SIZES.width * 0.03,
+  },
+
+  title: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.width * 0.05,
+    marginBottom: -4,
+    color: COLORS.white,
+  },
+
+  // ============= profile ==================
+  profile_box: {
+    width: SIZES.width * 0.9,
+    // alignItems: 'center',
+    marginVertical: SIZES.height * 0.01,
+  },
+
+  image_box: {
+    width: SIZES.width * 0.12,
+    height: SIZES.height * 0.06,
+    borderRadius: SIZES.width * 0.12,
+    overflow: 'hidden',
+    marginRight: SIZES.width * 0.03,
+    backgroundColor: COLORS.light,
+  },
+
+  profile: {
+    width: SIZES.width * 0.12,
+    height: SIZES.height * 0.06,
+    borderRadius: SIZES.width * 0.12,
+    marginRight: SIZES.width * 0.03,
+  },
+
+  user_box: {
+    width: SIZES.width * 0.9,
+    paddingHorizontal: SIZES.width * 0.05,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.width * 0.03,
+    marginBottom: SIZES.height * 0.02,
+    paddingVertical: SIZES.height * 0.015,
+    alignSelf: 'center',
+  },
+
+  user_row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  user_name: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.width * 0.045,
+    // marginBottom: -5,
+    color: COLORS.white,
+  },
+  subtitle: {
+    fontFamily: FONTS.regular,
+    color: COLORS.white,
+    fontSize: SIZES.width * 0.034,
+    // marginTop: -2,
+  },
+  text: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.width * 0.031,
+    // marginBottom: -5,
+    color: COLORS.white,
+  },
+
+  call_btn: {
+    width: SIZES.width * 0.1,
+    height: SIZES.height * 0.05,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: COLORS.white,
+    borderRadius: SIZES.height * 0.05,
+  },
+
+  order_btn: {
+    width: SIZES.width * 0.1,
+    height: SIZES.height * 0.05,
+    // borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: COLORS.secondary,
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.height * 0.05,
+  },
+
+  box: {
+    width: SIZES.width * 0.9,
+    paddingHorizontal: SIZES.width * 0.05,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.light1,
+    borderRadius: SIZES.width * 0.03,
+    paddingVertical: SIZES.height * 0.015,
+    alignSelf: 'center',
+  },
+  deliver: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.width * 0.045,
+    // marginBottom: -5,
+    color: COLORS.white,
+  },
+  // ============== button ================
+  btn_row: {
+    width: SIZES.width * 0.9,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: COLORS.light,
+    borderRadius: SIZES.height * 0.06,
+    padding: SIZES.width * 0.01,
+    marginTop: SIZES.height * 0.02,
+    marginBottom: SIZES.height * 0.03,
+    // marginVertical: SIZES.height * .02,
+    // marginBottom: SIZES.height * .05,
+  },
+
+  btn: {
+    width: SIZES.width * 0.43,
+    height: SIZES.height * 0.06,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+    borderRadius: SIZES.height * 0.06,
+  },
+
+  btn_text: {
+    fontFamily: FONTS.medium,
+    color: COLORS.white,
+    fontSize: SIZES.width * 0.041,
+    marginBottom: -5,
+  },
+
+  //   ================= order container ===========
+  order_box: {
+    width: SIZES.width * 0.9,
+    backgroundColor: '#F1F1F1',
+    marginVertical: SIZES.height * 0.02,
+    borderRadius: SIZES.width * 0.04,
+    alignSelf: 'center',
+    paddingBottom: SIZES.height * 0.02,
+  },
+
+  order_row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderColor: COLORS.light,
+    paddingVertical: SIZES.height * 0.01,
+    paddingHorizontal: SIZES.width * 0.03,
+    marginBottom: SIZES.height * 0.01,
+  },
+  order_id: {
+    fontFamily: FONTS.semiBold,
+    color: COLORS.secondary,
+    fontSize: SIZES.width * 0.042,
+    marginTop: SIZES.height * 0.01,
+    marginLeft: SIZES.width * 0.03,
+  },
+  key: {
+    fontFamily: FONTS.medium,
+    color: COLORS.black,
+    fontSize: SIZES.width * 0.038,
+    marginBottom: -5,
+  },
+  price: {
+    fontFamily: FONTS.semiBold,
+    color: COLORS.black,
+    fontSize: SIZES.width * 0.036,
+    marginBottom: -5,
+  },
+  value: {
+    width: SIZES.width * 0.4,
+    fontFamily: FONTS.regular,
+    color: COLORS.black,
+    fontSize: SIZES.width * 0.034,
+    marginBottom: -4,
+    textAlign: 'right',
+  },
+  pick_btn: {
+    height: SIZES.height * 0.06,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+  },
+
+  pick_btn_text: {
+    fontFamily: FONTS.semiBold,
+    color: COLORS.secondary,
+    fontSize: SIZES.width * 0.042,
+    marginBottom: -5,
+  },
+  btn1: {
+    // width: SIZES.width * .4,
+    alignSelf: 'center',
+    marginBottom: SIZES.height * 0.02,
+  },
+
+  row: {
+    width: SIZES.width * 0.9,
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    // borderTopWidth: 1,
+    // borderColor: COLORS.gray20
+    // marginBottom: SIZES.height * .01,
+  },
+
+  order_row1: {
+    width: SIZES.width * 0.8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: SIZES.height * 0.01,
+    paddingHorizontal: SIZES.width * 0.03,
+    // marginBottom: SIZES.height * .01,
+  },
+  address: {
+    width: SIZES.width * 0.8,
+    fontFamily: FONTS.regular,
+    color: COLORS.black,
+    fontSize: SIZES.width * 0.034,
+    marginBottom: -4,
+    alignSelf: 'center',
+  },
+  head: {
+    fontFamily: FONTS.semiBold,
+    color: COLORS.secondary,
+    fontSize: SIZES.width * 0.038,
+    marginTop: SIZES.height * 0.01,
+    marginLeft: SIZES.width * 0.03,
+  },
+  row_text: {
+    fontFamily: FONTS.regular,
+    color: COLORS.black,
+    fontSize: SIZES.width * 0.036,
+    marginBottom: -5,
+  },
+  row_title: {
+    fontFamily: FONTS.medium,
+    color: COLORS.black,
+    fontSize: SIZES.width * 0.036,
+    marginBottom: -5,
+  },
+  topBtnsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    gap: 10,
+    backgroundColor: COLORS.primary,
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: SIZES.width * 0.03,
+    width: SIZES.width * 0.9,
+    marginVertical: SIZES.width * 0.035,
+    // height: SIZES.height * .10,
+    // paddingHorizontal: 20,
+  },
+  topBtns: {
+    // backgroundColor: COLORS.primary,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+    border: 2,
+    // borderWidth: 2,
+    // borderColor: COLORS.primary,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  activeBtn: {
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 20,
+    border: 2,
+    // borderWidth: 2,
+    // borderColor: COLORS.primary,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  activeBtnText: {
+    fontSize: SIZES.width * 0.045,
+    color: COLORS.primary,
+    fontWeight: '600',
+  },
+
+  btnText: {
+    fontSize: SIZES.width * 0.045,
+    color: COLORS.white,
+    fontWeight: '600',
+  },
+  user_row2: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // marginVertical: SIZES.height * 0.02,
+    // backgroundColor: '#B70689',
+    // paddingHorizontal: 20,
+    marginHorizontal:  SIZES.width * 0.03,
+    paddingVertical: 10,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    justifyContent:'space-between',
+    height: SIZES.height * 0.1,
+  },
+  cus_name1: {
+    fontFamily: FONTS.extraBold,
+    color: COLORS.white,
+    fontSize: SIZES.width * 0.05,
+    // marginBottom: -5,
+    fontWeight: '600',
+  },
+  order_box2: {
+    width: SIZES.width * 0.94,
+    backgroundColor: '#FBCFFF80',
+    // marginTop: SIZES.height * 0.02,
+    // borderRadius: SIZES.width * 0.04,
+    alignSelf: 'center',
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+  },
+  subText1: {
+    fontSize: SIZES.width * 0.045,
+    fontWeight: '400',
+    color: COLORS.primary,
+    width: 150,
+  },
+  textBox1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  text22: {
+    fontSize:  SIZES.width * 0.045,
+    fontWeight: '600',
+    color: COLORS.primary,
+  },
+  horizontalLine: {
+    borderBottomColor: '#3B319E',
+    borderBottomWidth: 0.5,
+  },
+});
