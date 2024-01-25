@@ -1,5 +1,6 @@
 package com.ezycleandelivery;
-
+import org.devio.rn.splashscreen.SplashScreen;
+import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -12,6 +13,10 @@ public class MainActivity extends ReactActivity {
    * rendering of the component.
    */
   @Override
+  protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);  // here
+        super.onCreate(savedInstanceState);
+  }
   protected String getMainComponentName() {
     return "EzyCleanDelivery";
   }
@@ -30,3 +35,4 @@ public class MainActivity extends ReactActivity {
         DefaultNewArchitectureEntryPoint.getFabricEnabled());
   }
 }
+  

@@ -7,12 +7,12 @@ export default StyleSheet.create({
     width: SIZES.width,
     // borderBottomLeftRadius: 30,
     // borderBottomRightRadius: 30,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     alignItems: 'center',
-    paddingVertical: SIZES.height * 0.03,
+    // paddingVertical: SIZES.height * 0.03,
     tintColor: COLORS.primary,
-    height: SIZES.height * 0.37,
-    marginTop: SIZES.height * -0.028,
+    height: SIZES.height * 0.366,
+    // marginTop: SIZES.height * -0.028,
     // alignSelf:'center'
   },
 

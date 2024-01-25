@@ -28,10 +28,10 @@ export const SignUpApi = (postData, navigation, cb) => async dispatch => {
     postData = await objectToFormData(postData)
  
     cb && cb(true)
-    http.post(`driver_register`, postData, formDataHeader)
+    http.post(`delivery/register`, postData, formDataHeader)
         .then(async response => {
-            if (response.data.response) {
-                navigation?.navigate("Login")
+            if (response.data.data) {
+                navigation?.navigate("Login");
                 RNToasty.Success({
                     title: "Create account successfully",
                     duration: 2,
@@ -59,10 +59,10 @@ export const LoginApi = (postData, cb) => async dispatch => {
     postData = await objectToFormData(postData)
 
     cb && cb(true)
-    http.post("driver_login", postData, formDataHeader)
+    http.post("delivery/login", postData, formDataHeader)
         .then(async response => {
             console.log("login res : ", response?.data)
-            if (response.data.response) {
+            if (response.data.data) {
                 dispatch({
                     type: AUTH_TOKEN,
                     payload: response.data.data?.token
@@ -200,9 +200,9 @@ export const UpdateUserApi = (postData, navigation, cb) => async dispatch => {
     // console.log("update user post data : ", postData)
 
     cb && cb(true)
-    http.post(`driver_edit_profile?did=${userId}`, postData, formDataHeader)
+    http.post(`delivery/update-profile`, postData, formDataHeader)
         .then(async response => {
-            if (response.data.response) {
+            if (response.data.status === 200) {
                 dispatch(GetUserDataApi())
                 RNToasty.Success({
                     title: response.data.message,
@@ -212,10 +212,10 @@ export const UpdateUserApi = (postData, navigation, cb) => async dispatch => {
                 navigation?.goBack()
             } else {
                cb && cb(false);
-                // RNToasty.Info({
-                //     title: response.data.message,
-                //     duration: 2,
-                // });
+                RNToasty.Info({
+                    title: response.data.message,
+                    duration: 2,
+                });
             }
         })
         .catch(error => {
@@ -233,17 +233,18 @@ export const UpdateUserApi = (postData, navigation, cb) => async dispatch => {
 export const GetUserDataApi = () => async dispatch => {
     const userId = await AsyncStorage.getItem("@USER_ID")
     // console.log("GetUserDataApi user id ; ", userId)
-
+    // http.get(`driver_profile_details?did=${userId}`)
     dispatch({
         type: LOADING,
         payload: true,
     });
-    http.get(`driver_profile_details?did=${userId}`)
+    http.get(`delivery/delivery-boy`)
         .then(async response => {
-            if (response.data.response) {
+            console.log("delivery-boy ", response?.data?.data)
+            if (response.data.data) {
                 dispatch({
                     type: USER_DATA,
-                    payload: response.data.data,
+                    payload: response?.data?.data,
                 })
                 // RNToasty.Success({
                 //     title: "get user data successfully",
@@ -269,7 +270,7 @@ export const GetUserDataApi = () => async dispatch => {
                 type: LOADING,
                 payload: false,
             });
-            // console.log("user data error : ", error.response.data)
+            console.log("user data error : ", error.response.data)
             // RNToasty.Error({
             //     title: error.response.data.message,
             //     duration: 2,
@@ -283,10 +284,11 @@ export const ForgetPasswordApi = (postDataIn, navigation, cb) => async (dispatch
     const postData = await objectToFormData(postDataIn)
 
     cb && cb(true)
-    http.post(`driver_request_otp`, postData, formDataHeader)
+    http.post(`request_otp`, postData, formDataHeader)
         .then(async response => {
-            if (response.data.response) {
-                navigation?.navigate("Otp", { data: response.data.data[0]})
+            if (response.data.status) {
+                console.log("otp user response.data : ", response.data)
+                navigation?.navigate("Otp", {email:response.data.email})  //data: response.data.data[0],   before email in this line
                 // navigation && navigation.navigate("Otp", { data: postDataIn, otp: response.data.data[0].otp, id: response.data.id })
                 RNToasty.Success({
                     title: response.data.message,
@@ -319,15 +321,15 @@ export const VerifyOtpApi = (postData, navigation, userId, cb) => async (dispatc
     postData = await objectToFormData(postData)
 
     cb && cb(true)
-    http.post(`driver_verify_otp?userid=${userId}`, postData, formDataHeader)
+    http.post(`verifyotpp`, postData, formDataHeader)
         .then(async response => {
             // console.log("verify otp res : ", response.data)
-            if (response.data.response) {
+            if (response.data.status) {
                 RNToasty.Success({
                     title: response.data.message,
                     duration: 2,
                 });
-                navigation?.navigate("ResetPassword", { id: response.data.data })
+                navigation?.navigate("ResetPassword", { id: response.data });
                cb && cb(false)
             } else {
                cb && cb(false);
@@ -339,7 +341,7 @@ export const VerifyOtpApi = (postData, navigation, userId, cb) => async (dispatc
         })
         .catch(error => {
             cb && cb(false)
-            console.log("forget error : ", error)
+            console.log("forget error OTP INPUT: --- ", error)
             RNToasty.Error({
                 title: error.response?.data?.massage,
                 duration: 2,
@@ -355,10 +357,11 @@ export const ResetPasswordApi = (postData, navigation, userId, cb) => async disp
     console.log("ResetPasswordApi data userid : ", postData, userId)
 
     cb && cb(true)
-    http.post(`driver_reset_password?userid=${userId}`, postData, formDataHeader)
+    http.post(`updatedriverpass`, postData, formDataHeader)
         .then(async response => {
-            if (response.data.response) {
-                navigation?.replace("Login")
+            if (response.data) {
+                
+                // navigation?.replace("Login")
                 // if (userId) {
                 //     navigation?.goBack()
                 //     dispatch(GetUserDataApi())
@@ -370,6 +373,7 @@ export const ResetPasswordApi = (postData, navigation, userId, cb) => async disp
                     duration: 2,
                 });
                 cb && cb(false)
+                navigation?.replace("Login");
             } else {
                 cb && cb(false);
                 RNToasty.Info({

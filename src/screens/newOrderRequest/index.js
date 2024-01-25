@@ -18,7 +18,7 @@ import Icons from '../../component/Icons';
 import Button1 from '../../component/button/Button1';
 import LinearGradient from 'react-native-linear-gradient';
 
-const NewOrderRequest = () => {
+const NewOrderRequest = ({userData, navigation, route}) => {
   return (
     <View style={globalStyles.container}>
       <ScrollView style={{flex: 1}}>
@@ -40,7 +40,7 @@ const NewOrderRequest = () => {
           <View>
             <Text style={styles.cus_name}>
               {/* {item.Customer_Details?.customer_name} */}
-              Anmol Brass
+              {userData?.delivery_boy_name}
             </Text>
             <Text style={styles.subtitle}>Order #Dty0010C5</Text>
           </View>
@@ -170,7 +170,8 @@ const NewOrderRequest = () => {
             />
             <View>
               <Text style={[styles.success_cus_name]}>
-                {/* {Customer_Details?.customer_name} */}anmol
+                {/* {Customer_Details?.customer_name} */}
+                {userData?.delivery_boy_name}
               </Text>
               <Text style={([styles.subtitle], {color: COLORS.primary})}>
                 Customer
@@ -200,4 +201,16 @@ const NewOrderRequest = () => {
   );
 };
 
-export default NewOrderRequest;
+const mapStateToProps = (state) => ({
+  userData: state.auth.userData,
+  loading: state.home.loading,
+
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewOrderRequest);
+
+

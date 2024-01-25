@@ -15,7 +15,7 @@ const HeaderLeft = ({showBack, showNotificationButton, title, navigation}) => {
     <ImageBackground
       source={images.header_bg}
       style={styles.header}
-      resizeMode="cover">
+      resizeMode='contain'>
       <View style={styles.header_row}>
         <View style={styles.row}>
           {showBack && (
@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
   // ========== header =================
   header: {
     width: SIZES.width,
-    height: SIZES.height * 0.24,
+    height: SIZES.height * 0.2352,
     // borderBottomLeftRadius: 30,
     // borderBottomRightRadius: 30,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     tintColor: COLORS.primary,
-    marginTop: SIZES.width * -0.04,
+    // marginTop: SIZES.width * -0.04,
     // paddingVertical: SIZES.height * .03,
   },
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: SIZES.height * -0.03,
+    marginTop: SIZES.height * 0.06,
     // marginBottom: SIZES.height * .01,
     // borderWidth: 1,
   },
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 
   back_btn: {
     width: SIZES.width * 0.1,
-    height: SIZES.height * 0.05,
+    height: SIZES.height * 0.045,
     // borderWidth: 1,
     // alignItems: 'center',
     justifyContent: 'center',

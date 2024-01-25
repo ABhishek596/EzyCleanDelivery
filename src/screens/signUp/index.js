@@ -6,6 +6,8 @@ import {
   Linking,
   StatusBar,
   ScrollView,
+  TouchableWithoutFeedback,
+  Button,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {connect} from 'react-redux';
@@ -13,26 +15,29 @@ import Button1 from '../../component/button/Button1';
 import InputWithIcon from '../../component/input/InputWithIcon';
 import InputWithIcon1 from '../../component/input/InputWithIcon1';
 import styles from './styles';
-// import { RNToasty } from 'react-native-toasty';
+import {RNToasty} from 'react-native-toasty';
 import globalStyles from '../../styles/globalStyles';
-// import { SignUpApi } from '../../redux/actions/authActions';
+import {SignUpApi} from '../../redux/actions/authActions';
 import {COLORS, SIZES} from '../../constants';
 // import messaging from "@react-native-firebase/messaging"
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const SignUp = ({navigation, SignUpApi}) => {
   const [loading, setLoading] = useState(false);
-
   const [secure, setSecure] = useState(true);
   const [secure1, setSecure1] = useState(true);
   const [disable, setDisable] = useState(true);
   // const [fcm, setFcm] = useState();
 
   const [postData, setPostData] = useState({
-    name: null,
+    delivery_boy_name: null,
     phone_number: null,
     email: null,
     password: null,
     confirm_password: null,
+    dob: null,
+    gender: null,
+    branch: null,
     fcm_token: '',
   });
   const handleChange = (name, value) => {
@@ -41,6 +46,44 @@ const SignUp = ({navigation, SignUpApi}) => {
       [name]: value,
     });
   };
+  // -----------------------------------------  date  -------------------------------------------
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  console.log("signup date : ", date);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || ' select';
+    setShow(Platform.OS === 'ios'); // On iOS, show the picker again after selecting a date
+    setDate(currentDate);
+  };
+
+  const showDatePicker = () => {
+    setShow(true);
+  };
+
+  // const formatDate = date => {
+  //   // Format the date as per your requirement
+  //   return date.toISOString().split('T')[0]; // Example format: YYYY-MM-DD
+  // };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
+  
+    // Add leading zeros if needed
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+  
+    return `${formattedDay}-${formattedMonth}-${year}`;
+  };
+  
+  // Example usage:
+  // const originalDate = "1992-01-15T06:14:00.000Z";
+  // const formattedDate = formatDate(originalDate);
+  // console.log(formattedDate); // Output: "15-01-1992"
+  
+  //-----------------------------------------  X  ------------------------------------------------
 
   // useEffect(() => {
   //     getDeviceToken()
@@ -54,64 +97,74 @@ const SignUp = ({navigation, SignUpApi}) => {
 
   // console.log('signup data ; ', postData)
 
-  // const handleSubmit = () => {
-  //     // console.log('signup postdata ; ', postData)
-  //     // handleToken()
-  //     if (postData.name && postData.email && postData.password && postData.confirm_password && postData.phone_number) {
-  //         if (postData.password == postData.confirm_password) {
-  //             SignUpApi({ ...postData, fcm_token: fcm }, navigation, (data) => setLoading(data))
-  //             setPostData({
-  //                 "name": null,
-  //                 "phone_number": null,
-  //                 "email": null,
-  //                 "password": null,
-  //                 "confirm_password": null,
-  //             })
-  //         } else {
-  //             RNToasty.Error({
-  //                 title: "Password and confirm password does not match",
-  //                 duration: 2
-  //             })
-  //         }
+  const handleSubmit = () => {
+    // console.log('signup postdata ; ', postData)
+    // handleToken()
+    if (
+      postData.delivery_boy_name &&
+      postData.email &&
+      postData.password &&
+      postData.confirm_password &&
+      postData.phone_number &&
+      postData.dob &&
+      postData.gender &&
+      postData.branch
+    ) {
+      if (postData.password == postData.confirm_password) {
+        SignUpApi({...postData}, navigation, data => setLoading(data)); // SignUpApi({...postData, fcm_token: fcm}, navigation, data => setLoading(data));
+        setPostData({
+          delivery_boy_name: null,
+          phone_number: null,
+          email: null,
+          password: null,
+          confirm_password: null,
+          dob: null,
+          gender: null,
+          branch: null,
+        });
+      } else {
+        RNToasty.Error({
+          title: 'Password and confirm password does not match',
+          duration: 2,
+        });
+      }
+    } else {
+      RNToasty.Error({
+        title: 'Please fill all fields',
+        duration: 2,
+      });
+    }
+    // if (postData.fcm_token) {
+    //     if (postData.name && postData.email && postData.password && postData.confirm_password && postData.phone_number) {
+    //         if (postData.password == postData.confirm_password) {
+    //             SignUpApi(postData, navigation, (data) => setLoading(data))
+    //             setPostData({
+    //                 "name": null,
+    //                 "phone_number": null,
+    //                 "email": null,
+    //                 "password": null,
+    //                 "confirm_password": null,
+    //             })
+    //         } else {
+    //             RNToasty.Error({
+    //                 title: "Password and confirm password does not match",
+    //                 duration: 2
+    //             })
+    //         }
 
-  //     } else {
-  //         RNToasty.Error({
-  //             title: "Please fill all fields",
-  //             duration: 2
-  //         })
-  //     }
-  //     // if (postData.fcm_token) {
-  //     //     if (postData.name && postData.email && postData.password && postData.confirm_password && postData.phone_number) {
-  //     //         if (postData.password == postData.confirm_password) {
-  //     //             SignUpApi(postData, navigation, (data) => setLoading(data))
-  //     //             setPostData({
-  //     //                 "name": null,
-  //     //                 "phone_number": null,
-  //     //                 "email": null,
-  //     //                 "password": null,
-  //     //                 "confirm_password": null,
-  //     //             })
-  //     //         } else {
-  //     //             RNToasty.Error({
-  //     //                 title: "Password and confirm password does not match",
-  //     //                 duration: 2
-  //     //             })
-  //     //         }
-
-  //     //     } else {
-  //     //         RNToasty.Error({
-  //     //             title: "Please fill all fields",
-  //     //             duration: 2
-  //     //         })
-  //     //     }
-  //     // } else {
-  //     //     RNToasty.Error({
-  //     //         title: "fcm token is null",
-  //     //         duration: 2
-  //     //     })
-  //     // }
-
-  // }
+    //     } else {
+    //         RNToasty.Error({
+    //             title: "Please fill all fields",
+    //             duration: 2
+    //         })
+    //     }
+    // } else {
+    //     RNToasty.Error({
+    //         title: "fcm token is null",
+    //         duration: 2
+    //     })
+    // }
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -156,8 +209,8 @@ const SignUp = ({navigation, SignUpApi}) => {
             <InputWithIcon
               placeholder={'Name'}
               leftIcon={'user'}
-              value={postData.name}
-              onChangeText={text => handleChange('name', text)}
+              value={postData.delivery_boy_name}
+              onChangeText={text => handleChange('delivery_boy_name', text)}
             />
             <View
               style={{
@@ -255,6 +308,7 @@ const SignUp = ({navigation, SignUpApi}) => {
               value={postData.confirm_password}
               onChangeText={text => handleChange('confirm_password', text)}
             />
+
             <View
               style={{
                 flexDirection: 'row',
@@ -279,21 +333,61 @@ const SignUp = ({navigation, SignUpApi}) => {
                     Date of Birth
                   </Text>
                 </View>
-                <InputWithIcon1
+                <TouchableWithoutFeedback onPress={showDatePicker}>
+                  <View
+                    style={{
+                      width: SIZES.width * 0.4,
+                      alignSelf: 'flex-start',
+                      height: SIZES.height * 0.07,
+                      // backgroundColor: 'red',
+                      borderRadius:8,
+                      justifyContent:'center',
+                      borderColor:COLORS.gray20,
+                      borderWidth:1
+                    }}>
+                    <Text style={{fontSize: 14,left:10}}>
+                      {date ? formatDate(date) : 'Select Date'}
+                    </Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                  />
+                )}
+                {/* <InputWithIcon1
                   placeholder={'D.O.B.'}
                   // leftIcon={'lock'}
                   rightIcon={secure ? 'down-outline' : 'up-outline'}
                   onPress={() => setSecure(!secure)}
                   secureTextEntry={secure}
-                  value={postData.password}
-                  onChangeText={text => handleChange('password', text)}
+                  value={postData.dob}
+                  onChangeText={text => handleChange('dob', text)}
                   inputStyle={{
                     width: SIZES.width * 0.4,
                     alignSelf: 'flex-start',
                   }}
                   inputTextStyle={{width: SIZES.width * 0.29}}
                   style={{marginLeft: SIZES.width * 0.02}}
+                /> */}
+                <View>
+                  {/* <Button onPress={showDatePicker} title="Show Date Picker" /> */}
+                  {/* {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
                 />
+              )} */}
+                </View>
               </View>
               <View>
                 <View
@@ -318,8 +412,8 @@ const SignUp = ({navigation, SignUpApi}) => {
                   rightIcon={secure ? 'down-outline' : 'up-outline'}
                   onPress={() => setSecure(!secure)}
                   secureTextEntry={secure}
-                  value={postData.password}
-                  onChangeText={text => handleChange('password', text)}
+                  value={postData.gender}
+                  onChangeText={text => handleChange('gender', text)}
                   inputStyle={{
                     width: SIZES.width * 0.4,
                     alignSelf: 'flex-start',
@@ -351,15 +445,14 @@ const SignUp = ({navigation, SignUpApi}) => {
               rightIcon={secure ? 'down-outline' : 'up-outline'}
               onPress={() => setSecure(!secure)}
               secureTextEntry={secure}
-              value={postData.password}
-              onChangeText={text => handleChange('password', text)}
+              value={postData.branch}
+              onChangeText={text => handleChange('branch', text)}
             />
 
             <Button1
               disabled={loading}
               loading={loading}
-              // onPress={handleSubmit}
-            >
+              onPress={handleSubmit}>
               Sign Up
             </Button1>
           </View>
@@ -386,13 +479,11 @@ const SignUp = ({navigation, SignUpApi}) => {
   );
 };
 
-// const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-// })
+const mapDispatchToProps = {
+  SignUpApi,
+};
 
-// const mapDispatchToProps = {
-//     SignUpApi
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
-export default SignUp;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+// export default SignUp;

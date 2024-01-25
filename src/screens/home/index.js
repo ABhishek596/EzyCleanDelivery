@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
-// import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import styles from './styles';
 import {COLORS, SIZES, images} from '../../constants';
 import globalStyles from '../../styles/globalStyles';
@@ -42,7 +42,7 @@ const Home = ({
   dailyReport,
 }) => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-
+  console.log('userData!!!!!!!!!', userData);
   // messaging().setBackgroundMessageHandler(async remoteMessage => {
   //   GetAssignOrder()
   //   navigation?.navigate("Order")
@@ -192,7 +192,7 @@ const Home = ({
         <View style={styles.profile_box}>
           {/* <Text style={styles.user_name}>Hello {userData && (`${userData.name}`)}</Text> */}
           <Text style={styles.user_name}>
-            Hello Anmol {userData?.customer_details?.customer_name}
+            Hello {userData?.delivery_boy_name}
           </Text>
           <Text style={styles.text}>Welcome Back</Text>
         </View>
@@ -288,15 +288,15 @@ const Home = ({
   );
 };
 
-// const mapStateToProps = state => ({
-//   loading: state.home.loading,
-//   userData: state.auth.userData,
-//   dailyReport: state.home.dailyReport,
-// });
+const mapStateToProps = state => ({
+  loading: state.home.loading,
+  userData: state.auth.userData,
+  // dailyReport: state.home.dailyReport,
+});
 
-// const mapDispatchToProps = {
-//   GetDailyReport,
-// };
+const mapDispatchToProps = {
+  // GetDailyReport,
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Home);
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
+// export default Home;

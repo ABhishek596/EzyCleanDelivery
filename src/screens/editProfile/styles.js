@@ -8,10 +8,10 @@ export default StyleSheet.create({
         // height: SIZES.height * .35, 
         // borderBottomLeftRadius: 30,
         // borderBottomRightRadius: 30, 
-        overflow: 'hidden',
+        // overflow: 'hidden',
         alignItems: 'center',
-        height:SIZES.height * .37, 
-        marginTop:SIZES.height * -0.04,
+        height:SIZES.height * .366, 
+        // marginTop:SIZES.height * -0.04,
     },
 
     header_row: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
         // height: SIZES.height * .1,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: SIZES.height * .07,
+        marginTop: SIZES.height * .035,
         marginBottom: SIZES.height * .01,
         left:SIZES.width * -.02,
         // borderWidth: 1,

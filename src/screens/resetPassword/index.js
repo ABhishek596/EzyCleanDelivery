@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, Linking, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import Button1 from '../../component/button/Button1';
 import InputWithIcon1 from '../../component/input/InputWithIcon1';
 import {COLORS, SIZES} from '../../constants';
 import styles from './styles';
-// import { RNToasty } from 'react-native-toasty';
+import { RNToasty } from 'react-native-toasty';
 import globalStyles from '../../styles/globalStyles';
-// import { ResetPasswordApi } from '../../redux/actions/authActions';
+import { ResetPasswordApi } from '../../redux/actions/authActions';
 
 const ResetPassword = ({navigation, ResetPasswordApi, route}) => {
   const [secure, setSecure] = useState(true);
@@ -17,9 +17,11 @@ const ResetPassword = ({navigation, ResetPasswordApi, route}) => {
 
   // const user_id = route.params?.id
   // console.log("reset pass page : ", user_id)
+  console.log("reset email params : ", route?.params?.id?.email);
 
   const [postData, setPostData] = useState({
-    password: null,
+    email:route?.params?.id?.email,
+    new_password: null,
     confirm_password: null,
   });
   const handleChange = (name, value) => {
@@ -30,26 +32,26 @@ const ResetPassword = ({navigation, ResetPasswordApi, route}) => {
   };
 
   const handleSubmit = () => {
-    // if (postData.password) {
-    //     if (postData.password == postData.confirm_password) {
-    //         ResetPasswordApi(postData, navigation, user_id, (data) => setLoading(data))
-    //         setPostData({
-    //             "password": null,
-    //             "confirm_password": null,
-    //         })
-    //     } else {
-    //         RNToasty.Error({
-    //             title: "Password and confirm password not match",
-    //             duration: 2
-    //         })
-    //     }
-    // }else {
-    //     RNToasty.Error({
-    //         title: "Please enter new password",
-    //         duration: 2
-    //     })
-    // }
-    navigation.navigate('Login');
+    if (postData.new_password) {
+        if (postData.new_password == postData.confirm_password) {
+            ResetPasswordApi(postData, navigation, (data) => setLoading(data))
+            setPostData({
+                "new_password": null,
+                "confirm_password": null,
+            })
+        } else {
+            RNToasty.Error({
+                title: "Password and confirm password not match",
+                duration: 2
+            })
+        }
+    }else {
+        RNToasty.Error({
+            title: "Please enter new password",
+            duration: 2
+        })
+    }
+    // navigation.navigate('Login');
   };
   return (
     <KeyboardAwareScrollView
@@ -96,8 +98,8 @@ const ResetPassword = ({navigation, ResetPasswordApi, route}) => {
             rightIcon={secure ? 'eye-off' : 'eye'}
             onPress={() => setSecure(!secure)}
             secureTextEntry={secure}
-            value={postData.password}
-            onChangeText={text => handleChange('password', text)}
+            value={postData.new_password}
+            onChangeText={text => handleChange('new_password', text)}
           />
           <View
             style={{
@@ -140,13 +142,13 @@ const ResetPassword = ({navigation, ResetPasswordApi, route}) => {
   );
 };
 
-// const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
 
-// })
+})
 
-// const mapDispatchToProps = {
-//     ResetPasswordApi
-// }
+const mapDispatchToProps = {
+    ResetPasswordApi
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword)
-export default ResetPassword;
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword)
+// export default ResetPassword;

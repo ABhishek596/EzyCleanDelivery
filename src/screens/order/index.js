@@ -10,24 +10,24 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState, memo} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import styles from './styles';
 import {COLORS, SIZES, icons, images} from '../../constants';
 import globalStyles from '../../styles/globalStyles';
 import Button1 from '../../component/button/Button1';
 // import Loading from '../../component/loading';
 import LinearGradient from 'react-native-linear-gradient';
-// import {
-//   GetAssignOrder,
-//   GetCompletedOrder,
-//   UpdateOrderStatus,
-// } from '../../redux/actions/orderAction';
+import {
+  GetAssignOrder,
+  GetCompletedOrder,
+  UpdateOrderStatus,
+} from '../../redux/actions/orderAction';
 import Icons from '../../component/Icons';
 // import { Formik } from 'formik';
 // import * as yup from 'yup';
 // import Modal from 'react-native-modal';
 // import Input1 from '../../component/input/Input1';
-// import { RNToasty } from 'react-native-toasty';
+import { RNToasty } from 'react-native-toasty';
 // import { launchCamera } from 'react-native-image-picker';
 import {useIsFocused} from '@react-navigation/native';
 
@@ -360,7 +360,7 @@ const Order = ({
         <View style={styles.profile_box}>
           {/* <Text style={styles.user_name}>Hello {userData && (`${userData.name}`)}</Text> */}
           <Text style={styles.user_name}>
-            Hello Anmol {userData?.customer_details?.customer_name}
+            Hello {userData?.delivery_boy_name}
           </Text>
           <Text style={styles.text1}>Welcome Back</Text>
         </View>
@@ -424,7 +424,7 @@ const Order = ({
           <View>
             <Text style={styles.cus_name}>
               {/* {item.Customer_Details?.customer_name} */}
-              Anmol Brass
+              {userData?.delivery_boy_name}
             </Text>
             <Text style={styles.subtitle}>Customer Name</Text>
           </View>
@@ -736,19 +736,19 @@ const Order = ({
   );
 };
 
-// const mapStateToProps = state => ({
-//   assignOrder: state.order.assignOrder,
-//   completedOrder: state.order.completedOrder,
-//   loading: state.order.loading,
-//   userData: state.auth.userData,
-//   orderStatusList: state.order.orderStatusList,
-// });
+const mapStateToProps = state => ({
+  assignOrder: state.order.assignOrder,
+  completedOrder: state.order.completedOrder,
+  loading: state.order.loading,
+  userData: state.auth.userData,
+  orderStatusList: state.order.orderStatusList,
+});
 
-// const mapDispatchToProps = {
-//   UpdateOrderStatus,
-//   GetCompletedOrder,
-//   GetAssignOrder,
-// };
+const mapDispatchToProps = {
+  UpdateOrderStatus,
+  GetCompletedOrder,
+  GetAssignOrder,
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(memo(Order));
-export default Order;
+export default connect(mapStateToProps, mapDispatchToProps)(memo(Order));
+// export default Order;

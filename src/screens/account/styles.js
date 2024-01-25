@@ -10,8 +10,8 @@ export default StyleSheet.create({
         // overflow: 'hidden',
         alignItems: 'center',
         // paddingVertical: SIZES.height * .03,
-        height:SIZES.height * .37,
-        marginTop:SIZES.height * -0.04,
+        height:SIZES.height * .366,
+        // marginTop:SIZES.height * -0.04,
     },
 
     header_row: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: SIZES.height * .075,
+        marginTop: SIZES.height * .035,
         // marginBottom: SIZES.height * .01,
         // borderWidth: 1,
     },

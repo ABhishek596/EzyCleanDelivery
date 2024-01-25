@@ -8,21 +8,21 @@ import {
   Platform,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-// import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 import Button1 from '../../component/button/Button1';
 import Icons from '../../component/Icons';
 import InputWithIcon from '../../component/input/InputWithIcon';
 import InputWithIcon1 from '../../component/input/InputWithIcon1';
 import {COLORS, SIZES} from '../../constants';
 import styles from './styles';
-// import {RNToasty} from 'react-native-toasty';
+import {RNToasty} from 'react-native-toasty';
 import globalStyles from '../../styles/globalStyles';
-// import {
-//   AuthFunction,
-//   GoogleLoginApi,
-//   LoginApi,
-// } from '../../redux/actions/authActions';
-// import Loading from '../../component/loading';
+import {
+  AuthFunction,
+  GoogleLoginApi,
+  LoginApi,
+} from '../../redux/actions/authActions';
+import Loading from '../../component/loading';
 // import {
 //   GoogleSignin,
 //   statusCodes,
@@ -41,27 +41,27 @@ const Login = ({navigation, LoginApi, AuthFunction, GoogleLoginApi}) => {
     password: null,
   });
   const handleChange = (name, value) => {
-    // setPostData({
-    //   ...postData,
-    //   [name]: value,
-    // });
+    setPostData({
+      ...postData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = () => {
-    // if (postData.email && postData.password) {
-    //   // LoginApi(postData, (data) => setLoading(data))
-    //   LoginApi({...postData, fcm_token: fcmToken}, data => setLoading(data));
-    //   setPostData({
-    //     email: null,
-    //     password: null,
-    //   });
-    // } else {
-    //   RNToasty.Error({
-    //     title: 'Please fill all fields',
-    //     duration: 2,
-    //   });
-    // }
-    navigation.navigate('StackNavigator');
+    if (postData.email && postData.password) {
+      // LoginApi(postData, (data) => setLoading(data))
+      LoginApi({...postData}, data => setLoading(data));    // LoginApi({...postData, fcm_token: fcmToken}, data => setLoading(data));
+      setPostData({
+        email: null,
+        password: null,
+      });
+    } else {
+      RNToasty.Error({
+        title: 'Please fill all fields',
+        duration: 2,
+      });
+    }
+    // navigation.navigate('StackNavigator');
   };
 
   // useEffect(() => {
@@ -164,7 +164,7 @@ const Login = ({navigation, LoginApi, AuthFunction, GoogleLoginApi}) => {
             style={{
               alignSelf: 'flex-start',
               marginBottom: SIZES.width * 0.02,
-              // marginLeft: SIZES.width * .05,
+              marginLeft: SIZES.width * .02,
             }}>
             <Text
               style={{
@@ -177,7 +177,7 @@ const Login = ({navigation, LoginApi, AuthFunction, GoogleLoginApi}) => {
             </Text>
           </View>
           <InputWithIcon
-            placeholder={'Email Address'}
+            placeholder={'Email'}
             leftIcon={'email'}
             value={postData.email}
             onChangeText={text => handleChange('email', text)}
@@ -186,7 +186,7 @@ const Login = ({navigation, LoginApi, AuthFunction, GoogleLoginApi}) => {
             style={{
               alignSelf: 'flex-start',
               marginBottom: SIZES.width * 0.02,
-              // marginLeft: SIZES.width * .05,
+              marginLeft: SIZES.width * .02,
             }}>
             <Text
               style={{
@@ -260,9 +260,9 @@ const Login = ({navigation, LoginApi, AuthFunction, GoogleLoginApi}) => {
               onLogoutFinished={() => console.log("logout.")} /> 
           </View> 
           */}
-        </View>
+         </View>
 
-        <View style={globalStyles.row}>
+         <View style={globalStyles.row}>
           <Text style={[globalStyles.text, {color: COLORS.primary}]}>
             Don’t have an account?{' '}
           </Text>
@@ -271,19 +271,19 @@ const Login = ({navigation, LoginApi, AuthFunction, GoogleLoginApi}) => {
             onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.signup_text}>Sign up</Text>
           </TouchableOpacity>
-        </View>
+         </View>
       </View>
     </KeyboardAwareScrollView>
   );
 };
 
-// const mapStateToProps = state => ({});
+const mapStateToProps = state => ({});
 
-// const mapDispatchToProps = {
-//   LoginApi,
-//   AuthFunction,
-//   GoogleLoginApi,
-// };
+const mapDispatchToProps = {
+  LoginApi,
+  AuthFunction,
+  GoogleLoginApi,
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+// export default Login;

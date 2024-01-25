@@ -21,7 +21,7 @@ export const http1 = axios.create({
 //new link https://saag.theprojecttest.xyz/  replace  https://dryfi.theprojecttest.xyz/api/    //No
 //https://software.dryfi.in/    replace  https://dryfi.theprojecttest.xyz/api/    //Yes
 const http = axios.create({
-	baseURL: 'https://dryfi.theprojecttest.xyz/api/',
+	baseURL: 'https://ezyclean.theprojecttest.xyz/api/',
 	timeout: 100000,
 	headers: {
 		'Content-Type': 'application/json',

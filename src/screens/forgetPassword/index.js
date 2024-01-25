@@ -26,18 +26,18 @@ const ForgetPassword = ({navigation, ForgetPasswordApi}) => {
   };
 
   const handleSubmit = () => {
-    // if (postData.email) {
-    //     ForgetPasswordApi(postData, navigation, (data) => setLoading(data))
-    //     setPostData({
-    //         "email": null,
-    //     })
-    // } else {
-    //     RNToasty.Error({
-    //         title: "Please enter your email",
-    //         duration: 2
-    //     })
-    // }
-    navigation.navigate('Otp');
+    if (postData.email) {
+      ForgetPasswordApi(postData, navigation, data => setLoading(data));
+      setPostData({
+        email: null,
+      });
+    } else {
+      RNToasty.Error({
+        title: 'Please enter your email',
+        duration: 2,
+      });
+    }
+    // navigation.navigate('Otp');
   };
   return (
     <KeyboardAwareScrollView
@@ -101,13 +101,11 @@ const ForgetPassword = ({navigation, ForgetPasswordApi}) => {
   );
 };
 
-// const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-// })
+const mapDispatchToProps = {
+  ForgetPasswordApi,
+};
 
-// const mapDispatchToProps = {
-//     ForgetPasswordApi
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ForgetPassword)
-export default ForgetPassword;
+export default connect(mapStateToProps, mapDispatchToProps)(ForgetPassword);
+// export default ForgetPassword;

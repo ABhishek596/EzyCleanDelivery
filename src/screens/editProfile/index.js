@@ -19,9 +19,9 @@ import Button1 from '../../component/button/Button1';
 import Loading from '../../component/loading';
 // import { http2 } from '../../services/api';
 import ImageCropPicker from 'react-native-image-crop-picker';
-//   import {RNToasty} from 'react-native-toasty';
+import {RNToasty} from 'react-native-toasty';
 import InputWithIcon1 from '../../component/input/InputWithIcon1';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const EditProfile = ({
   navigation,
   UpdateUserApi,
@@ -33,15 +33,22 @@ const EditProfile = ({
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   // const userData = route.params && route.params.userData
   const [profileImage, setProfileImage] = useState(images.profile1);
+  const [id, setId] = useState();
   // const customerData = userData?.customer_details
-  // console.log("userData", userData)
+  console.log("userDataeedddiiiiittttttttttttt", userData);
   // console.log("profile image : ", userData && userData.image)
 
   const [postData, setPostData] = useState({
-    customer_name: null,
+    delivery_boy_name: null,
     phone_number: null,
     profile_picture: null,
-    // address: null
+    gender: null,
+    dob: null,
+    id: id,
+    branch: null,
+    address: null,
+    email: null,
+    password: null,
   });
 
   const handleChange = (name, value) => {
@@ -68,7 +75,7 @@ const EditProfile = ({
 
   const handleSubmit = () => {
     if (
-      postData.customer_name &&
+      postData.delivery_boy_name &&
       postData.profile_picture?.uri &&
       postData.phone_number
     ) {
@@ -81,23 +88,32 @@ const EditProfile = ({
       });
     }
   };
+ 
+  useEffect(async() => {
+    const userId = await AsyncStorage.getItem("@USER_ID");
+    setId(userId);  
+  }, []);
 
-  // useEffect(() => {
-  //     GetUserDataApi()
-  // }, [])
+  useEffect(() => {
+    GetUserDataApi();
+  }, []);
 
-  // useEffect(() => {
-  //     if (userData) {
-  //         if (userData.profile_picture) {
-  //             setProfileImage({ uri: userData.profile_picture })
-  //         }
-  //         setPostData({
-  //             "customer_name": userData.customer_details?.customer_name,
-  //             "phone_number": userData.customer_details?.phone_number,
-  //             "profile_picture": { uri: userData.profile_picture, name: "profile_picture.jpg", type: "image/jpg" },
-  //         })
-  //     }
-  // }, [userData])
+  useEffect(() => {
+    if (userData) {
+      if (userData.profile_picture) {
+        setProfileImage({uri: userData.profile_picture});
+      }
+      setPostData({
+        delivery_boy_name: userData.delivery_boy_name,
+        phone_number: userData?.phone_number,
+        profile_picture: {
+          uri: userData.profile_picture,
+          name: 'profile_picture.jpg',
+          type: 'image/jpg',
+        },
+      });
+    }
+  }, [userData]);
 
   // console.log("uodate customer profile : ", postData)
   // console.log("laldsfjao g; ", loadingIndicator)
@@ -158,8 +174,8 @@ const EditProfile = ({
                 placeholder={'Enter your Name'}
                 leftIcon={'user'}
                 label={'First Name'}
-                value={postData.customer_name}
-                onChangeText={text => handleChange('customer_name', text)}
+                value={postData.delivery_boy_name}
+                onChangeText={text => handleChange('delivery_boy_name', text)}
               />
               <InputWithIcon
                 placeholder={'Enter your Last Name'}
@@ -173,7 +189,7 @@ const EditProfile = ({
                 placeholder={'Email Address'}
                 leftIcon={'email'}
                 label={'Email Address'}
-                value={userData?.customer_details?.email}
+                value={userData?.email}
                 editable={false}
               />
               <View
@@ -235,13 +251,13 @@ const EditProfile = ({
                     </Text>
                   </View>
                   <InputWithIcon1
-                    placeholder={'Select City'}
+                    placeholder={'D.O.B.'}
                     // leftIcon={'lock'}
                     rightIcon={secure ? 'down-outline' : 'up-outline'}
                     onPress={() => setSecure(!secure)}
                     secureTextEntry={secure}
-                    value={postData.password}
-                    onChangeText={text => handleChange('password', text)}
+                    value={postData.dob}
+                    onChangeText={text => handleChange('dob', text)}
                     inputStyle={{
                       width: SIZES.width * 0.4,
                       alignSelf: 'flex-start',
@@ -267,13 +283,13 @@ const EditProfile = ({
                     </Text>
                   </View>
                   <InputWithIcon1
-                    placeholder={'Select City'}
+                    placeholder={'Select Gender'}
                     // leftIcon={'lock'}
                     rightIcon={secure ? 'down-outline' : 'up-outline'}
                     onPress={() => setSecure(!secure)}
                     secureTextEntry={secure}
-                    value={postData.password}
-                    onChangeText={text => handleChange('password', text)}
+                    value={postData.gender}
+                    onChangeText={text => handleChange('gender', text)}
                     inputStyle={{
                       width: SIZES.width * 0.4,
                       alignSelf: 'flex-start',
@@ -304,8 +320,8 @@ const EditProfile = ({
                 rightIcon={secure ? 'down-outline' : 'up-outline'}
                 onPress={() => setSecure(!secure)}
                 secureTextEntry={secure}
-                value={postData.password}
-                onChangeText={text => handleChange('password', text)}
+                value={postData.branch}
+                onChangeText={text => handleChange('branch', text)}
               />
               <InputWithIcon
                 placeholder={'Type Address...'}
@@ -320,7 +336,7 @@ const EditProfile = ({
               <Button1
                 disabled={loadingIndicator}
                 loading={loadingIndicator}
-                // onPress={handleSubmit}
+                onPress={handleSubmit}
                 style={{
                   borderRadius: SIZES.width * 0.06,
                   // marginTop: SIZES.height * 0.03,
@@ -336,18 +352,18 @@ const EditProfile = ({
   );
 };
 
-// const mapStateToProps = (state) => ({
-//     userData: state.auth.userData,
-//     loading: state.auth.loading,
-// })
+const mapStateToProps = state => ({
+  userData: state.auth.userData,
+  loading: state.auth.loading,
+});
 
-// const mapDispatchToProps = {
-//     UpdateUserApi,
-//     GetUserDataApi,
-// }
+const mapDispatchToProps = {
+  UpdateUserApi,
+  GetUserDataApi,
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
-export default EditProfile;
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
+// export default EditProfile;
 
 // import { View, Text, StatusBar, ImageBackground, TouchableOpacity, Image } from 'react-native'
 // import React, { useEffect, useState } from 'react'

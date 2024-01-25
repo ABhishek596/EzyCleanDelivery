@@ -13,8 +13,8 @@ import styles from './styles';
 import ImagePicker from 'react-native-image-crop-picker';
 // import { BottomSheet } from 'react-native-btr';
 import Button1 from '../../component/button/Button1';
-// import { UploadDocumentApi } from '../../redux/actions/authActions';
-// import { connect } from 'react-redux';
+import {UploadDocumentApi} from '../../redux/actions/authActions';
+import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -29,6 +29,10 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
     aadhar_back: null,
     pan_card: null,
     driving_license: null,
+    id:1,
+    account_no: null,
+    bank_name: null,
+    ifsc_code: null,
   });
 
   const FeatureRow = ({title, onValueChange, value, colorCode, price}) => {
@@ -152,11 +156,11 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                     </View>
                     <View style={styles.horizontalLine} />
                     {/* <View style={styles.textBox1}>
-              <Text style={styles.text22}>Cash on Delivery</Text>
-              <Text style={styles.subText1}>
+                <Text style={styles.text22}>Cash on Delivery</Text>
+                <Text style={styles.subText1}>
                  {item.pickup_time} $ 140
-              </Text>
-            </View> */}
+                </Text>
+                </View> */}
                     {/* <View style={styles.horizontalLine} /> */}
                     <View style={{marginTop: SIZES.height * 0.02}}>
                       {damageList && (
@@ -165,8 +169,8 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                           renderItem={({item, index}) => (
                             <FeatureRow
                               title={item.damage}
-                              // value={postData.damage_id == item ? true : false}
-                              // onValueChange={() => handleChange('damage_id', item)}
+                              value={postData.damage_id == item ? true : false}
+                              onValueChange={() => handleChange('damage_id', item)}
                             />
                           )}
                           key={item => item.id}
@@ -188,34 +192,34 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                 </View>
               </View>
               {/* <Text style={styles.ownerText}>Owner Aadhar card</Text>
-                                <View style={styles.adharCardTouchMain}>
-                                    <TouchableOpacity style={styles.adharCardPicTouch}
-                                        activeOpacity={0.3}
-                                        onPress={() => ImagePick("aadhar_front")}
-                                    >
-                                        {postData.aadhar_front ?
-                                            <Image source={{ uri: postData.aadhar_front?.uri }} resizeMode='contain' style={styles.adharImg} />
-                                            :
-                                            <View style={{ alignItems: 'center' }}>
-                                                <Image source={icons.camera} resizeMode='contain' style={styles.cameraIcon} />
-                                                <Text style={styles.sideText}>Front side</Text>
-                                            </View>
-                                        }
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.adharCardPicTouch}
-                                        activeOpacity={0.3}
-                                        onPress={() => ImagePick("aadhar_back")}
-                                    >
-                                        {postData.aadhar_back ?
-                                            <Image source={{ uri: postData.aadhar_back.uri }} resizeMode='contain' style={styles.adharImg} />
-                                            :
-                                            <View style={{ alignItems: 'center' }}>
-                                                <Image source={icons.camera} resizeMode='contain' style={styles.cameraIcon} />
-                                                <Text style={styles.sideText}>Back side</Text>
-                                            </View>
-                                        }
-                                    </TouchableOpacity>
-                                </View> */}
+                  <View style={styles.adharCardTouchMain}>
+                      <TouchableOpacity style={styles.adharCardPicTouch}
+                          activeOpacity={0.3}
+                          onPress={() => ImagePick("aadhar_front")}
+                      >
+                          {postData.aadhar_front ?
+                              <Image source={{ uri: postData.aadhar_front?.uri }} resizeMode='contain' style={styles.adharImg} />
+                              :
+                              <View style={{ alignItems: 'center' }}>
+                                  <Image source={icons.camera} resizeMode='contain' style={styles.cameraIcon} />
+                                  <Text style={styles.sideText}>Front side</Text>
+                              </View>
+                          }
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.adharCardPicTouch}
+                          activeOpacity={0.3}
+                          onPress={() => ImagePick("aadhar_back")}
+                      >
+                          {postData.aadhar_back ?
+                              <Image source={{ uri: postData.aadhar_back.uri }} resizeMode='contain' style={styles.adharImg} />
+                              :
+                              <View style={{ alignItems: 'center' }}>
+                                  <Image source={icons.camera} resizeMode='contain' style={styles.cameraIcon} />
+                                  <Text style={styles.sideText}>Back side</Text>
+                              </View>
+                          }
+                      </TouchableOpacity>
+                  </View> */}
             </>
           ) : conditionState == 'DL' ? (
             <>
@@ -264,22 +268,22 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                     </View>
                     <View style={styles.horizontalLine} />
                     {/* <View style={styles.textBox1}>
-              <Text style={styles.text22}>Cash on Delivery</Text>
-              <Text style={styles.subText1}>
-                 {item.pickup_time} $ 140
-              </Text>
-            </View> */}
+                    <Text style={styles.text22}>Cash on Delivery</Text>
+                    <Text style={styles.subText1}>
+                      {item.pickup_time} $ 140
+                    </Text>
+                    </View> */}
                     {/* <View style={styles.horizontalLine} /> */}
                     <View style={{marginTop: SIZES.height * 0.02}}>
                       <View style={styles.row1}>
                         {/* {colorCode && (
-          <View
-            style={[styles.color_box, colorCode && {backgroundColor: colorCode}]}
-          />
-        )} */}
+                            <View
+                            style={[styles.color_box, colorCode && {backgroundColor: colorCode}]}
+                            />
+                             )} */}
                         <CheckBox
-                          // value={value}
-                          // onValueChange={onValueChange}
+                          value={value}
+                          onValueChange={onValueChange}
                           tintColors={{
                             true: COLORS.primary,
                             false: COLORS.primary,
@@ -326,6 +330,72 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                   </TouchableOpacity>
                 </View>
               </View> */}
+            </>
+          ) : conditionState == 'AC' ? (
+            <>
+              {/* {update soon for AAdhar} */}
+              <View style={{marginVertical: 10}}>
+                <LinearGradient
+                  colors={['#651898' + 70, '#2C0D8F' + 90]}
+                  start={{x: 0, y: 0.5}}
+                  end={{x: 1, y: 0.5}}
+                  style={[styles.user_row2, {height: SIZES.height * 0.075}]}>
+                  <Text
+                    style={[
+                      styles.cus_name1,
+                      {marginLeft: SIZES.width * 0.03},
+                    ]}>
+                    Enter Aadhar card details
+                  </Text>
+                </LinearGradient>
+
+                <View style={[styles.order_box2]}>
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginLeft: 13,
+                      }}>
+                      <Image
+                        // source={
+                        //   postData.driving_license
+                        //     ? {uri: postData.driving_license?.uri}
+                        //     : icons.dl
+                        // }
+                        source={require('../../assets/icons/aadharcard.png')}
+                        resizeMode="contain"
+                        style={styles.panImg}
+                      />
+
+                      <Text style={[styles.text22, {marginLeft: 15}]}>
+                        Enter Aadhar card details
+                      </Text>
+                    </View>
+                    <View style={styles.horizontalLine} />
+
+                    <View style={{marginTop: SIZES.height * 0.02}}>
+                      <View style={styles.row1}>
+                        <CheckBox
+                          // value={value}
+                          // onValueChange={onValueChange}
+                          tintColors={{
+                            true: COLORS.primary,
+                            false: COLORS.primary,
+                          }}
+                          style={styles.checkBox}
+                        />
+                        <View style={styles.charge_row}>
+                          <Text style={styles.label}>
+                            I don’t have Aadhar card
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={{height: 20}} />
+                  </View>
+                </View>
+              </View>
             </>
           ) : (
             <>
@@ -374,19 +444,19 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                     </View>
                     <View style={styles.horizontalLine} />
                     {/* <View style={styles.textBox1}>
-              <Text style={styles.text22}>Cash on Delivery</Text>
-              <Text style={styles.subText1}>
-                 {item.pickup_time} $ 140
-              </Text>
-            </View> */}
+                        <Text style={styles.text22}>Cash on Delivery</Text>
+                        <Text style={styles.subText1}>
+                          {item.pickup_time} $ 140
+                        </Text>
+                        </View> */}
                     {/* <View style={styles.horizontalLine} /> */}
                     <View style={{marginTop: SIZES.height * 0.02}}>
                       <View style={styles.row1}>
                         {/* {colorCode && (
-          <View
-            style={[styles.color_box, colorCode && {backgroundColor: colorCode}]}
-          />
-        )} */}
+                              <View
+                              style={[styles.color_box, colorCode && {backgroundColor: colorCode}]}
+                               />
+                              )} */}
                         <CheckBox
                           // value={value}
                           // onValueChange={onValueChange}
@@ -406,85 +476,17 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                     </View>
                     <View style={{height: 20}} />
                     {/* <Button1
-                     onPress={()=>navigation.navigate('OrderDetails')}
-                     style={{
-                       borderRadius: 50,
-                       width: 170,
-                       marginVertical: 20,
-                     }}>
-                     Invoice
-                   </Button1> */}
+                        onPress={()=>navigation.navigate('OrderDetails')}
+                        style={{
+                          borderRadius: 50,
+                          width: 170,
+                          marginVertical: 20,
+                        }}>
+                        Invoice
+                      </Button1> */}
                   </View>
                 </View>
               </View>
-
-              {/* {update soon for AAdhar} */}
-              {/* <View style={{marginVertical: 10}}>
-<LinearGradient
-  colors={['#651898' + 70, '#2C0D8F' + 90]}
-  start={{x: 0, y: 0.5}}
-  end={{x: 1, y: 0.5}}
-  style={[styles.user_row2, {height: SIZES.height * 0.075}]}>
-  <Text
-    style={[
-      styles.cus_name1,
-      {marginLeft: SIZES.width * 0.03},
-    ]}>
-    Enter Aadhar card details
-  </Text>
-  
-</LinearGradient>
-
-<View style={[styles.order_box2]}>
-  
-  <View>
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 13,
-      }}>
-      <Image
-        // source={
-        //   postData.driving_license
-        //     ? {uri: postData.driving_license?.uri}
-        //     : icons.dl
-        // }
-        source={require('../../assets/icons/aadharcard.png')}
-        resizeMode="contain"
-        style={styles.panImg}
-      />
-
-      <Text style={[styles.text22, {marginLeft: 15}]}>
-        Enter Aadhar card details
-      </Text>
-    </View>
-    <View style={styles.horizontalLine} />
-    
-    <View style={{marginTop: SIZES.height * 0.02}}>
-      <View style={styles.row1}>
-       
-        <CheckBox
-          // value={value}
-          // onValueChange={onValueChange}
-          tintColors={{
-            true: COLORS.primary,
-            false: COLORS.primary,
-          }}
-          style={styles.checkBox}
-        />
-        <View style={styles.charge_row}>
-          <Text style={styles.label}>
-            I don’t have Aadhar card
-          </Text>
-        </View>
-      </View>
-    </View>
-    <View style={{height: 20}} />
-
-  </View>
-</View>
-</View> */}
 
               {/* {last code} */}
               {/* <Text style={styles.ownerText}>Upload Pan Card</Text>
@@ -510,10 +512,10 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
           )}
 
           {/* <Text style={styles.tipText}>Tip</Text>
-          <Text style={styles.makeText}>
-            Make sure things like Names, Numbers, Address are cleary visible
-            while taking photo
-          </Text> */}
+              <Text style={styles.makeText}>
+                Make sure things like Names, Numbers, Address are cleary visible
+                while taking photo
+              </Text> */}
         </View>
       </View>
       {/* <View style={{height: SIZES.height * 0.09}} /> */}
@@ -588,16 +590,13 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
   );
 };
 
-// const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-// })
+const mapDispatchToProps = {
+  UploadDocumentApi,
+};
 
-// const mapDispatchToProps = {
-//     UploadDocumentApi
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(UploadDocument)
-export default UploadDocument;
+export default connect(mapStateToProps, mapDispatchToProps)(UploadDocument);
 
 const damageList = [
   {id: 1, damage: 'Aadhar card or voter id'},

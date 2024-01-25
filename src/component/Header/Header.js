@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {COLORS, FONTS, icons, images, SIZES} from '../../constants';
+import Icons from '../Icons';
 
-const Header = () => {
+const Header = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageBox}>
@@ -17,7 +18,13 @@ const Header = () => {
           source={require('../../assets/images/header_bg.png')}
           resizeMode="contain"
           style={styles.container}>
-          <View style={styles.container}>
+          <View>
+            <TouchableOpacity
+             style={{position:'absolute', right:SIZES.width * 0.48,top:SIZES.height * 0.025}}
+              // style={styles.back_btn}
+              onPress={() => navigation?.goBack()}>
+              <Icons name={'back'} size={22} color={COLORS.white} />
+            </TouchableOpacity>
             <View style={styles.imageBox}>
               <Image
                 source={icons.dryfinewlogo}
@@ -72,13 +79,13 @@ const styles = StyleSheet.create({
   },
   container: {
     width: SIZES.width,
-    height: SIZES.height * 0.24,
+    height: SIZES.height * 0.2352,
     // backgroundColor: COLORS.primary,
     // borderBottomLeftRadius: 25,
     // borderBottomRightRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:SIZES.height * -0.016,
+    // marginTop:SIZES.height * -0.016,
   },
 
   imageBox: {
@@ -87,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // borderWidth: 1,
-    marginTop: SIZES.height * 0.03,
+    // marginTop: SIZES.height * 0.03,
   },
 
   image: {

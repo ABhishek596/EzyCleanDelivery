@@ -6,9 +6,9 @@ import Button1 from '../../component/button/Button1';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import globalStyles from '../../styles/globalStyles';
 import styles from './styles';
-// import { connect } from 'react-redux';
-// import { RNToasty } from 'react-native-toasty';
-// import { ForgetPasswordApi, VerifyOtpApi } from '../../redux/actions/authActions';
+import {connect} from 'react-redux';
+import {RNToasty} from 'react-native-toasty';
+import {ForgetPasswordApi, VerifyOtpApi} from '../../redux/actions/authActions';
 // import CountDown from '../../component/countDown/CountDown';
 
 const Otp = ({
@@ -25,9 +25,13 @@ const Otp = ({
 
   // console.log("otp data: ", route.params.data, route.params.otp )
   // const userdata = route.params && route.params.data
-
+  // console.log('otp data: ', route?.params?.email, route?.params?.email);
+  // const useremaildata = route?.params && route?.params?.email;
+  const useremaildata = route?.params?.email;
+  console.log('useremaildata data: ', useremaildata);
   const [postData, setPostData] = useState({
     otp: null,
+    email: useremaildata,
   });
 
   const handleChange = (name, value) => {
@@ -38,18 +42,18 @@ const Otp = ({
   };
 
   const handleSubmit = () => {
-    // if (postData.otp) {
-    //     VerifyOtpApi(postData, navigation,userdata.id, (data) => setLoading(data))
-    //     setPostData({
-    //         "otp": null,
-    //     })
-    // } else {
-    //     RNToasty.Error({
-    //         title: "Please enter otp",
-    //         duration: 2
-    //     })
-    // }
-    navigation.navigate('ResetPassword');
+    if (postData.otp) {
+      VerifyOtpApi(postData, navigation, data => setLoading(data)); //VerifyOtpApi(postData, navigation, userdata.id, data => setLoading(data));
+      setPostData({
+        otp: null,
+      });
+    } else {
+      RNToasty.Error({
+        title: 'Please enter otp',
+        duration: 2,
+      });
+    }
+    // navigation.navigate('ResetPassword');
   };
 
   // const countdownTimer = async (duration) => {
@@ -155,14 +159,12 @@ const Otp = ({
   );
 };
 
-// const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-// })
+const mapDispatchToProps = {
+  VerifyOtpApi,
+  ForgetPasswordApi,
+};
 
-// const mapDispatchToProps = {
-//     VerifyOtpApi,
-//     ForgetPasswordApi
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Otp)
-export default Otp;
+export default connect(mapStateToProps, mapDispatchToProps)(Otp);
+// export default Otp;

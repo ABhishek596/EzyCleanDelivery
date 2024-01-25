@@ -44,9 +44,9 @@ const Account = ({
   userData,
   GetUserDataApi,
 }) => {
-  // useEffect(() => {
-  //     GetUserDataApi()
-  // }, [])
+  useEffect(() => {
+      GetUserDataApi()
+  }, [])
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   
@@ -103,7 +103,7 @@ const Account = ({
               <Text
                 style={
                   styles.user_name
-                }>{`${userData?.customer_details?.customer_name}`}</Text>
+                }>{`${userData?.delivery_boy_name}`}</Text>
               <Text style={styles.text}>Welcome Back</Text>
             </View>
           </ImageBackground>
@@ -179,11 +179,13 @@ const Account = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button1}
-                  onPress={() => {
-                    // Handle 'Yes' button click here
-                    toggleModal();
-                    navigation.navigate('OnBoardingScreen');
-                  }}
+                  // onPress={() => {
+                  //   // Handle 'Yes' button click here
+                  //   // toggleModal();
+                  //   // navigation.navigate('OnBoardingScreen');
+
+                  // }}
+                  onPress={LogoutApi}
                 >
                   <Text style={styles.yes}>Yes</Text>
                 </TouchableOpacity>
@@ -197,15 +199,15 @@ const Account = ({
   );
 };
 
-// const mapStateToProps = (state) => ({
-//     userData: state.auth.userData,
-//     loading: state.auth.loading,
-// })
+const mapStateToProps = (state) => ({
+    userData: state.auth.userData,
+    loading: state.auth.loading,
+})
 
-// const mapDispatchToProps = {
-//     LogoutApi,
-//     GetUserDataApi,
-// }
+const mapDispatchToProps = {
+    LogoutApi,
+    GetUserDataApi,
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Account)
-export default Account;
+export default connect(mapStateToProps, mapDispatchToProps)(Account)
+// export default Account;

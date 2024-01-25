@@ -74,7 +74,7 @@ const OrderDetails = ({userData, navigation, route}) => {
             <View>
               <Text style={styles.user_name}>
                 {/* {item?.Customer_Details?.customer_name} */}
-                Anmol Brass
+                {userData?.delivery_boy_name}
               </Text>
               <Text style={styles.subtitle}>Ordered by</Text>
             </View>
@@ -290,15 +290,15 @@ const OrderDetails = ({userData, navigation, route}) => {
   );
 };
 
-// const mapStateToProps = (state) => ({
-//     userData: state.auth.userData,
-//     // loading: state.home.loading,
+const mapStateToProps = (state) => ({
+    userData: state.auth.userData,
+    loading: state.home.loading,
 
-// })
+})
 
-// const mapDispatchToProps = {
+const mapDispatchToProps = {
 
-// }
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails)
-export default OrderDetails;
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails)
+// export default OrderDetails;
