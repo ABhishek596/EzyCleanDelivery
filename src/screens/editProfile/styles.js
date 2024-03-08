@@ -93,6 +93,30 @@ export default StyleSheet.create({
         right: SIZES.width * -.01,
         bottom: SIZES.height * .025,
     },
+    selectedGenderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: SIZES.width * 0.035,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 7,
+        width:150,
+        justifyContent:'space-evenly'
+      },
+      modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:5
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      genderOption: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        width: '100%',
+        alignItems: 'center',
+      },
 
    
 });

@@ -21,7 +21,7 @@ import StackNavigator from '../navigation/stackNavigator';
 // import { notificationListener } from '../services/notification';
 // import Location from '../screens/location';
 // import home from '../screens/home';
-
+import Loading from '../component/loading';
 const Stack = createStackNavigator();
 
 const Root = ({token, InitialCall}) => {
@@ -66,7 +66,9 @@ const Root = ({token, InitialCall}) => {
 
   return (
     <>
-      {token == null ? (
+      {rootLoading ? (
+        <Loading loading={rootLoading} />
+      ) : token == null ? (
         <Stack.Navigator
           initialRouteName="OnBoardingScreen"
           screenOptions={() => ({
@@ -118,16 +120,6 @@ const Root = ({token, InitialCall}) => {
             component={ForgetPassword}
             options={({navigation}) => ({
               header: () => <Header navigation={navigation} />,
-            })}
-          />
-          <Stack.Screen
-            name="StackNavigator"
-            component={StackNavigator}
-            options={({navigation}) => ({
-              // header: () => (
-              //     <Header />
-              // )
-              headerShown: false,
             })}
           />
         </Stack.Navigator>

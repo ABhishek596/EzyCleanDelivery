@@ -29,7 +29,7 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
     aadhar_back: null,
     pan_card: null,
     driving_license: null,
-    id:1,
+    id: 1,
     account_no: null,
     bank_name: null,
     ifsc_code: null,
@@ -170,7 +170,9 @@ const UploadDocument = ({navigation, UploadDocumentApi}) => {
                             <FeatureRow
                               title={item.damage}
                               value={postData.damage_id == item ? true : false}
-                              onValueChange={() => handleChange('damage_id', item)}
+                              onValueChange={() =>
+                                handleChange('damage_id', item)
+                              }
                             />
                           )}
                           key={item => item.id}

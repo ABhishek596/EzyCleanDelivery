@@ -16,6 +16,7 @@ const InputWithIcon1 = ({
     onPress,
     rightIcon,
     rightIconclr,
+    editable,
     inputStyle }) => {
 
     const [focusColor, setFocusColor] = useState(COLORS.borderColor)
@@ -40,6 +41,7 @@ const InputWithIcon1 = ({
                 style={[styles.inputTextStyle, inputTextStyle]}
                 onBlur={() => setFocusColor(COLORS.borderColor)}
                 onFocus={() => setFocusColor(COLORS.primary)}
+                editable={editable}
             />
             <TouchableOpacity
                 onPress={onPress}

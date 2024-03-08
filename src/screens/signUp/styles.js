@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { COLORS, FONTS } from '../../constants'
+import { COLORS, FONTS, SIZES } from '../../constants'
 
 export default StyleSheet.create({
     signup_btn: {
@@ -16,5 +16,29 @@ export default StyleSheet.create({
         marginBottom: 0,
         color: COLORS.primary,
     },
+    selectedGenderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: SIZES.width * 0.035,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 7,
+        width:150,
+        justifyContent:'space-evenly'
+      },
+      modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:5
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      genderOption: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        width: '100%',
+        alignItems: 'center',
+      },
 
 })

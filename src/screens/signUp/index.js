@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -8,21 +8,22 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Button,
+  Modal,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { connect } from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {connect} from 'react-redux';
 import Button1 from '../../component/button/Button1';
 import InputWithIcon from '../../component/input/InputWithIcon';
 import InputWithIcon1 from '../../component/input/InputWithIcon1';
 import styles from './styles';
-import { RNToasty } from 'react-native-toasty';
+import {RNToasty} from 'react-native-toasty';
 import globalStyles from '../../styles/globalStyles';
-import { SignUpApi } from '../../redux/actions/authActions';
-import { COLORS, SIZES } from '../../constants';
+import {SignUpApi} from '../../redux/actions/authActions';
+import {COLORS, SIZES} from '../../constants';
 // import messaging from "@react-native-firebase/messaging"
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-const SignUp = ({ navigation, SignUpApi }) => {
+import Icon from 'react-native-vector-icons/FontAwesome';
+const SignUp = ({navigation, SignUpApi}) => {
   const [loading, setLoading] = useState(false);
   const [secure, setSecure] = useState(true);
   const [secure1, setSecure1] = useState(true);
@@ -49,23 +50,15 @@ const SignUp = ({ navigation, SignUpApi }) => {
   // -----------------------------------------  date  -------------------------------------------
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
-  console.log("signup date : ", date);
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || ' select';
-    setShow(Platform.OS === 'ios'); // On iOS, show the picker again after selecting a date
-    setDate(currentDate);
-  };
+  console.log('signup date : ', date);
 
-  const showDatePicker = () => {
-    setShow(true);
-  };
 
   // const formatDate = date => {
   //   // Format the date as per your requirement
   //   return date.toISOString().split('T')[0]; // Example format: YYYY-MM-DD
   // };
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.getMonth() + 1; // Months are zero-based
@@ -76,6 +69,44 @@ const SignUp = ({ navigation, SignUpApi }) => {
     const formattedMonth = month < 10 ? `0${month}` : month;
 
     return `${formattedDay}-${formattedMonth}-${year}`;
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || ' select';
+    setShow(Platform.OS === 'ios'); // On iOS, show the picker again after selecting a date
+    setDate(currentDate);
+    console.log("currentDatecurrentDate,,,,,", currentDate);
+    const formatDate = dateString => {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+  
+      // Add leading zeros if needed
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+  
+      return `${formattedDay}-${formattedMonth}-${year}`;
+    };
+
+    formatDate(currentDate);
+    // console.log("formatDatecurrentDate,,,,,", formatDate(currentDate));
+    handleChange('dob', formatDate(currentDate));
+  };
+
+  const showDatePicker = () => {
+    setShow(true);
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedGender, setSelectedGender] = useState(null);
+
+  const genders = ['Male', 'Female', 'Other'];
+
+  const handleSelectGender = gender => {
+    setSelectedGender(gender);
+    setModalVisible(false);
+    handleChange('gender', gender);
   };
 
   // Example usage:
@@ -111,7 +142,7 @@ const SignUp = ({ navigation, SignUpApi }) => {
       postData.branch
     ) {
       if (postData.password == postData.confirm_password) {
-        SignUpApi({ ...postData }, navigation, data => setLoading(data)); // SignUpApi({...postData, fcm_token: fcm}, navigation, data => setLoading(data));
+        SignUpApi({...postData}, navigation, data => setLoading(data)); // SignUpApi({...postData, fcm_token: fcm}, navigation, data => setLoading(data));
         setPostData({
           delivery_boy_name: null,
           phone_number: null,
@@ -182,11 +213,11 @@ const SignUp = ({ navigation, SignUpApi }) => {
           justifyContent: 'space-between',
           paddingVertical: SIZES.height * 0.03,
         }}>
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
           <View style={globalStyles.center}>
             <View style={globalStyles.title_box}>
               <Text style={globalStyles.title}>Create Account</Text>
-              <Text style={[globalStyles.text, { color: COLORS.primary }]}>
+              <Text style={[globalStyles.text, {color: COLORS.primary}]}>
                 Please fill the details and create account
               </Text>
             </View>
@@ -333,7 +364,7 @@ const SignUp = ({ navigation, SignUpApi }) => {
                     Date of Birth
                   </Text>
                 </View>
-                {/* <TouchableWithoutFeedback onPress={showDatePicker}>
+                <TouchableWithoutFeedback onPress={showDatePicker}>
                   <View
                     style={{
                       width: SIZES.width * 0.4,
@@ -349,8 +380,8 @@ const SignUp = ({ navigation, SignUpApi }) => {
                       {date ? formatDate(date) : 'Select Date'}
                     </Text>
                   </View>
-                </TouchableWithoutFeedback> */}
-                {/* {show && (
+                </TouchableWithoutFeedback>
+                {show && (
                   <DateTimePicker
                     testID="dateTimePicker"
                     value={date}
@@ -359,8 +390,8 @@ const SignUp = ({ navigation, SignUpApi }) => {
                     display="default"
                     onChange={onChange}
                   />
-                )}*/}
-                <InputWithIcon1
+                )}
+                {/* <InputWithIcon1
                   placeholder={'D.O.B.'}
                   rightIconclr={'#ffffff'}
                   // leftIcon={'lock'}
@@ -373,9 +404,9 @@ const SignUp = ({ navigation, SignUpApi }) => {
                     width: SIZES.width * 0.4,
                     alignSelf: 'flex-start',
                   }}
-                  inputTextStyle={{ width: SIZES.width * 0.29 }}
-                  style={{ marginLeft: SIZES.width * 0.02 }}
-                />
+                  inputTextStyle={{width: SIZES.width * 0.29}}
+                  style={{marginLeft: SIZES.width * 0.02}}
+                /> */}
                 <View>
                   {/* <Button onPress={showDatePicker} title="Show Date Picker" /> */}
                   {/* {show && (
@@ -407,7 +438,7 @@ const SignUp = ({ navigation, SignUpApi }) => {
                     Gender
                   </Text>
                 </View>
-                <InputWithIcon1
+                {/* <InputWithIcon1
                   placeholder={'Gender'}
                   rightIconclr={'#ffffff'}
                   leftIcon={'lock'}
@@ -422,7 +453,34 @@ const SignUp = ({ navigation, SignUpApi }) => {
                   }}
                   inputTextStyle={{ width: SIZES.width * 0.29 }}
                   style={{ marginLeft: SIZES.width * 0.02 }}
-                />
+                /> */}
+                <View style={{}}>
+                  <TouchableWithoutFeedback
+                    onPress={() => setModalVisible(true)}>
+                    <View style={styles.selectedGenderContainer}>
+                      <Text>{selectedGender || 'Select Gender'}</Text>
+                      {modalVisible === false ? (
+                        <Icon name="chevron-down" size={20} />
+                      ) : (
+                        <Icon name="chevron-up" size={20} />
+                      )}
+                    </View>
+                  </TouchableWithoutFeedback>
+
+                  {modalVisible && (
+                    <View style={styles.modalContainer}>
+                      {genders.map(gender => (
+                        <TouchableWithoutFeedback
+                          key={gender}
+                          onPress={() => handleSelectGender(gender)}>
+                          <View style={styles.genderOption}>
+                            <Text>{gender}</Text>
+                          </View>
+                        </TouchableWithoutFeedback>
+                      ))}
+                    </View>
+                  )}
+                </View>
               </View>
             </View>
             <View
@@ -430,7 +488,7 @@ const SignUp = ({ navigation, SignUpApi }) => {
                 alignSelf: 'flex-start',
                 marginBottom: SIZES.width * 0.02,
                 // marginLeft: SIZES.width * .05,
-              }}>
+              }}> 
               <Text
                 style={{
                   textAlign: 'left',
@@ -447,9 +505,10 @@ const SignUp = ({ navigation, SignUpApi }) => {
               // leftIcon={'lock'}
               rightIcon={secure ? 'down-outline' : 'up-outline'}
               onPress={() => setSecure(!secure)}
-              secureTextEntry={!secure}
+              // secureTextEntry={!secure}
               value={postData.branch}
               onChangeText={text => handleChange('branch', text)}
+              editable={true}
             />
 
             <Button1
@@ -463,19 +522,19 @@ const SignUp = ({ navigation, SignUpApi }) => {
           <View
             style={[
               globalStyles.row,
-              { alignSelf: 'center', top: SIZES.height * 0.015 },
+              {alignSelf: 'center', top: SIZES.height * 0.015},
             ]}>
-            <Text style={[globalStyles.text, { color: COLORS.primary }]}>
+            <Text style={[globalStyles.text, {color: COLORS.primary}]}>
               Already have an account?{' '}
             </Text>
             <TouchableOpacity
               style={styles.signup_btn}
-              onPress={() => navigation.navigate({ name: 'Login' })} //back to login page
+              onPress={() => navigation.navigate({name: 'Login'})} //back to login page
             >
               <Text style={styles.signup_text}>Sign in</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ height: 20 }} />
+          <View style={{height: 20}} />
         </ScrollView>
       </View>
     </KeyboardAwareScrollView>

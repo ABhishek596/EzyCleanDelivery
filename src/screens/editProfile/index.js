@@ -3,8 +3,9 @@ import {
   Text,
   StatusBar,
   ImageBackground,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import globalStyles from '../../styles/globalStyles';
@@ -17,11 +18,15 @@ import InputWithIcon from '../../component/input/InputWithIcon';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Button1 from '../../component/button/Button1';
 import Loading from '../../component/loading';
+// import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 // import { http2 } from '../../services/api';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {RNToasty} from 'react-native-toasty';
 import InputWithIcon1 from '../../component/input/InputWithIcon1';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const EditProfile = ({
   navigation,
   UpdateUserApi,
@@ -33,11 +38,16 @@ const EditProfile = ({
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   // const userData = route.params && route.params.userData
   const [profileImage, setProfileImage] = useState(images.profile1);
+  // const [show, setshow] = useState(false);
+  // const [date, setDate] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [id, setId] = useState();
   // const customerData = userData?.customer_details
-  console.log("userDataeedddiiiiittttttttttttt", userData);
+  console.log('userDataeedddiiiiittttttttttttt', userData);
   // console.log("profile image : ", userData && userData.image)
-  console.log("profile id : ", id);
+  console.log('profile id : ', id);
   const [postData, setPostData] = useState({
     delivery_boy_name: null,
     phone_number: null,
@@ -73,6 +83,78 @@ const EditProfile = ({
     });
   };
 
+  // const showDatePicker = () => {
+  //   setDatePickerVisibility(true);
+  // };
+  const showDatePicker = () => {
+    setShow(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
+
+    // Add leading zeros if needed
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+
+    return `${formattedDay}-${formattedMonth}-${year}`;
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || ' select';
+    setShow(Platform.OS === 'ios'); // On iOS, show the picker again after selecting a date
+    setDate(currentDate);
+    console.log("currentDatecurrentDate,,,,,", currentDate);
+    const formatDate = dateString => {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+  
+      // Add leading zeros if needed
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+  
+      return `${formattedDay}-${formattedMonth}-${year}`;
+    };
+
+    formatDate(currentDate);
+    // console.log("formatDatecurrentDate,,,,,", formatDate(currentDate));
+    handleChange('dob', formatDate(currentDate));
+  };
+
+  const handleConfirm = date => {
+    // setSelectedDate(date.toDateString());
+    hideDatePicker();
+    setDate(date.toDateString());
+    setshow(true);
+    // handleChange('dob', date.toDateString());
+    console.log("date.toDateString()", date.toDateString())
+    // setDateOfBirth(date.toDateString());
+    const formatDate = dateString => {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+  
+      // Add leading zeros if needed
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+  
+      return `${formattedDay}-${formattedMonth}-${year}`;
+    };
+
+    formatDate(date);
+    console.log("formatDatecurrentDate,,,,,", formatDate(currentDate));
+  };
+
   const handleSubmit = () => {
     if (
       postData.delivery_boy_name &&
@@ -88,10 +170,10 @@ const EditProfile = ({
       });
     }
   };
- 
-  useEffect(async() => {
-    const userId = await AsyncStorage.getItem("@USER_ID");
-    setId(userId);  
+
+  useEffect(async () => {
+    const userId = await AsyncStorage.getItem('@USER_ID');
+    setId(userId);
   }, []);
 
   useEffect(() => {
@@ -115,8 +197,21 @@ const EditProfile = ({
     }
   }, [userData]);
 
-  console.log("uodate customer profile : ", postData);
+  console.log('uodate customer profile : ', postData);
   // console.log("laldsfjao g; ", loadingIndicator)
+
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedGender, setSelectedGender] = useState(null);
+
+  const genders = ['Male', 'Female', 'Other'];
+
+  const handleSelectGender = gender => {
+    setSelectedGender(gender);
+    setModalVisible(false);
+    handleChange('gender', gender);
+  };
+
 
   return (
     <>
@@ -251,7 +346,71 @@ const EditProfile = ({
                       Date of Birth
                     </Text>
                   </View>
-                  <InputWithIcon1
+                  <TouchableWithoutFeedback onPress={showDatePicker}>
+                  <View
+                    style={{
+                      width: SIZES.width * 0.4,
+                      alignSelf: 'flex-start',
+                      height: SIZES.height * 0.07,
+                      // backgroundColor: 'red',
+                      borderRadius:8,
+                      justifyContent:'center',
+                      borderColor:COLORS.gray20,
+                      borderWidth:1
+                    }}>
+                    <Text style={{fontSize: 14,left:10}}>
+                      {date ? formatDate(date) : 'Select Date'}
+                    </Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                  />
+                )}
+                  {/* <TouchableWithoutFeedback onPress={showDatePicker}>
+                    <View
+                      style={{
+                        // backgroundColor: 'red',
+                        width: SIZES.width * 0.4,
+                        borderWidth: 1,
+                        borderColor: 'grey',
+                        borderRadius: 6,
+                        height: SIZES.height * 0.07,
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          // padding: 7.5,
+                          // backgroundColor: '#fff',
+                          // color: 'black',
+                          // width: SIZES.width * 0.4,
+                          // textAlign: 'center',
+                          // height: SIZES.width * 0.09,
+                          // borderWidth: 1,
+                          left: SIZES.width * 0.02,
+                          fontSize: SIZES.width * 0.04,
+                        }}>
+                        {show
+                          ? `${moment(
+                              moment(date, 'MM/DD/YYYY').toDate(),
+                            ).format('MM/DD/YYYY')}`
+                          : 'D.O.B.'}
+                      </Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                  /> */}
+                  {/* <InputWithIcon1
                     placeholder={'ex. 12-10-1984'}
                     // leftIcon={'lock'}
                     rightIcon={secure ? 'down-outline' : 'up-outline'}
@@ -265,7 +424,7 @@ const EditProfile = ({
                     }}
                     inputTextStyle={{width: SIZES.width * 0.29}}
                     style={{marginLeft: SIZES.width * 0.02}}
-                  />
+                  /> */}
                 </View>
                 <View>
                   <View
@@ -283,7 +442,7 @@ const EditProfile = ({
                       Gender
                     </Text>
                   </View>
-                  <InputWithIcon1
+                  {/* <InputWithIcon1
                     placeholder={'Select Gender'}
                     // leftIcon={'lock'}
                     rightIcon={secure ? 'down-outline' : 'up-outline'}
@@ -297,7 +456,34 @@ const EditProfile = ({
                     }}
                     inputTextStyle={{width: SIZES.width * 0.29}}
                     style={{marginLeft: SIZES.width * 0.02}}
-                  />
+                  /> */}
+                  <View style={{}}>
+                    <TouchableWithoutFeedback
+                      onPress={() => setModalVisible(true)}>
+                      <View style={styles.selectedGenderContainer}>
+                        <Text>{selectedGender || 'Select Gender'}</Text>
+                        {modalVisible === false ? (
+                          <Icon name="chevron-down" size={20} />
+                        ) : (
+                          <Icon name="chevron-up" size={20} />
+                        )}
+                      </View>
+                    </TouchableWithoutFeedback>
+
+                    {modalVisible && (
+                      <View style={styles.modalContainer}>
+                        {genders.map(gender => (
+                          <TouchableWithoutFeedback
+                            key={gender}
+                            onPress={() => handleSelectGender(gender)}>
+                            <View style={styles.genderOption}>
+                              <Text>{gender}</Text>
+                            </View>
+                          </TouchableWithoutFeedback>
+                        ))}
+                      </View>
+                    )}
+                  </View>
                 </View>
               </View>
               <View

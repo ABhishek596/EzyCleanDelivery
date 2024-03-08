@@ -11,9 +11,9 @@ const AppContainer = ({navigation}) => {
   // useEffect(() => {
   //   SplashScreen.hide();
   // }, [])
-
+  //  <NavigationContainer ref={ref => NavigationService.setTopLevelNavigator(ref)}>
   return (
-    <NavigationContainer ref={ref => NavigationService.setTopLevelNavigator(ref)}>
+    <NavigationContainer>
       <Root />
     </NavigationContainer>
   );
