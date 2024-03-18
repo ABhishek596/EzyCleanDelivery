@@ -27,7 +27,7 @@ import Icons from '../../component/Icons';
 // import * as yup from 'yup';
 // import Modal from 'react-native-modal';
 // import Input1 from '../../component/input/Input1';
-import {RNToasty} from 'react-native-toasty';
+// import {RNToasty} from 'react-native-toasty';
 // import { launchCamera } from 'react-native-image-picker';
 import {useIsFocused} from '@react-navigation/native';
 
@@ -202,7 +202,7 @@ const Order = ({
   //   });
   // };
 
-  //console.log('stattttttttttt', JSON.stringify(assignOrder[0]));   //temp clos
+  console.log('stattttttttttt', JSON.stringify(assignOrder.Address_Details));   //temp clos
 
   const handleTabChange = newActive => {
     setActive(newActive);
@@ -445,7 +445,7 @@ const Order = ({
           <View>
             {assignOrder ? (
               <FlatList
-                data={assignOrder && assignOrder}
+                data={assignOrder}
                 renderItem={({item, index}) => {
                   let address = item
                     ? `${item?.Address_Details?.[0]?.address} ${item?.Address_Details?.[0]?.locality} ${item?.Address_Details?.[0]?.city} ${item?.Address_Details?.[0]?.state} ${item?.Address_Details?.[0]?.country} ${item?.Address_Details?.[0]?.pincode}`
@@ -478,7 +478,7 @@ const Order = ({
                                 styles.cus_name,
                                 {marginLeft: SIZES.width * 0.03},
                               ]}>
-                              Order #{item.order_id}
+                              Order {item.order_id}
                               {/* Order #Dty0010C5 */}
                             </Text>
                             <Text
@@ -504,7 +504,7 @@ const Order = ({
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Pickup Time</Text>
                                 <Text style={styles.subText}>
-                                  {item.pickup_time}
+                                {item.pickup_date.slice(11,16)}
                                   {/* 04/04/2023 */}
                                 </Text>
                               </View>
@@ -514,7 +514,7 @@ const Order = ({
                                   Delivery Address
                                 </Text>
                                 <Text style={styles.subText}>
-                                  {item.Address_Details}
+                                  {address}
                                   {/* add add adddd 234/90 */}
                                 </Text>
                               </View>
@@ -531,7 +531,7 @@ const Order = ({
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Total Amount</Text>
                                 <Text style={styles.subText}>
-                                  ${item.total}
+                                  ${item.sub_total}
                                 </Text>
                               </View>
                               <View style={[styles.horizontalLineEnd]} />
@@ -582,14 +582,14 @@ const Order = ({
           <View>
             {completedOrder ? (
               <FlatList
-                data={completedOrder && completedOrder}
+                data={completedOrder}
                 renderItem={({item, index}) => {
                   let address = item
                     ? `${item?.Address_Details?.[0]?.address} ${item?.Address_Details?.[0]?.locality} ${item?.Address_Details?.[0]?.city} ${item?.Address_Details?.[0]?.state} ${item?.Address_Details?.[0]?.country} ${item?.Address_Details?.[0]?.pincode}`
                     : null;
-                  //   console.log(item, 'item ');
+                    console.log(item, 'item ');
                   let quantity = 0;
-
+                  console.log('item--address ',item.Address_Details[0].address);
                   item.Item_Details?.forEach(element => {
                     quantity += element.qty;
                   });
@@ -615,7 +615,7 @@ const Order = ({
                                 styles.cus_name,
                                 {marginLeft: SIZES.width * 0.03},
                               ]}>
-                              Order #{item.order_id}
+                              Order {item.order_id}
                               {/* Order #Dty0010C5 */}
                             </Text>
                             <Text
@@ -640,7 +640,7 @@ const Order = ({
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Pickup Time</Text>
                                 <Text style={styles.subText}>
-                                  {item.pickup_time}
+                                  {item.pickup_date.slice(11,16)}
                                 </Text>
                               </View>
                               <View style={styles.horizontalLine} />
@@ -649,8 +649,7 @@ const Order = ({
                                   Delivery Address
                                 </Text>
                                 <Text style={styles.subText}>
-                                  {/* {address} */}
-                                  add add adddd 234/90
+                                  {address}
                                 </Text>
                               </View>
                               <View style={styles.horizontalLine} />
@@ -666,7 +665,7 @@ const Order = ({
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Total Amount</Text>
                                 <Text style={styles.subText}>
-                                  $ {item.total}
+                                  $ {item.sub_total}
                                 </Text>
                               </View>
                               <View style={[styles.horizontalLineEnd]} />

@@ -70,7 +70,7 @@ export const GetCompletedOrder = cb => async dispatch => {
   });
   cb && cb(true);
   http
-    .get(`delivery/complete-order-data/9`)
+    .get(`delivery/complete-order-data/${userId}`)
     .then(async response => {
       if (response.data?.status) {
         dispatch({
