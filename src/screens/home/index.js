@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
   PermissionsAndroid,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
@@ -15,7 +16,7 @@ import {COLORS, SIZES, images} from '../../constants';
 import globalStyles from '../../styles/globalStyles';
 // import Button1 from '../../component/button/Button1';
 import Loading from '../../component/loading';
-import { GetDailyReport } from '../../redux/actions/homeAction';
+import {GetDailyReport, GetAllReport} from '../../redux/actions/homeAction';
 // import messaging from '@react-native-firebase/messaging';
 // import { notificationListener } from '../../services/notification';
 // import Geolocation from 'react-native-geolocation-service';
@@ -39,10 +40,15 @@ const Home = ({
   notificationListener,
   // loading,
   GetDailyReport,
+  GetAllReport,
   dailyReport,
+  allReport,
 }) => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [allReports, setAllReports] = useState(false);
+
   console.log('userData!!!!!!!!!', userData);
+  console.log('userallReport!!!!!!', allReport);
   // messaging().setBackgroundMessageHandler(async remoteMessage => {
   //   GetAssignOrder()
   //   navigation?.navigate("Order")
@@ -72,6 +78,7 @@ const Home = ({
   useEffect(() => {
     if (isFocus) {
       GetDailyReport();
+      GetAllReport();
     }
   }, [isFocus]);
 
@@ -129,7 +136,11 @@ const Home = ({
 
   return (
     <View style={globalStyles.container}>
-      <StatusBar backgroundColor="transparent" barStyle="light-content" translucent={true} />
+      <StatusBar
+        backgroundColor="transparent"
+        barStyle="light-content"
+        translucent={true}
+      />
       {/* <Loading loading={loading} /> */}
       {/* header */}
       {/* <View style={styles.header_bg}>
@@ -184,7 +195,11 @@ const Home = ({
             <TouchableOpacity
               style={styles.notification_btn}
               onPress={() => navigation.navigate('Notification')}>
-              <Icons name={'notification_outline'} size={22} color={COLORS.primary} />
+              <Icons
+                name={'notification_outline'}
+                size={22}
+                color={COLORS.primary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -234,54 +249,115 @@ const Home = ({
               borderRadius: SIZES.width * 0.02,
             }}>
             <Text style={styles.title}>Our All Report</Text>
-            <Icons
-              name={'down-outline'}
-              size={20}
-              color={COLORS.white}
-              style={{marginRight: SIZES.width * 0.03}}
-            />
+            {allReports === false ? (
+              <Pressable onPress={() => setAllReports(true)}>
+                <Icons
+                  name={'down-outline'}
+                  size={20}
+                  color={COLORS.white}
+                  style={{marginRight: SIZES.width * 0.03}}
+                />
+              </Pressable>
+            ) : (
+              <Pressable onPress={() => setAllReports(false)}>
+                <Icons
+                  name={'up-outline'}
+                  size={20}
+                  color={COLORS.white}
+                  style={{marginRight: SIZES.width * 0.03}}
+                />
+              </Pressable>
+            )}
           </LinearGradient>
-          <View style={styles.card_row}>
-            <Card
-              total={dailyReport?.Today_All_Orders}
-              // total={90}
-              title={'Total'}
-              source={images.active}
-              bgColor={'#838EFF'}
-            />
 
-            <TouchableOpacity onPress={() => navigateToOrder(0)}>
-              <Card
-                total={dailyReport?.Total_Pending_Orders}
-                // total={25}
-                // title={'New Order'}
-                title={'Active'}
-                source={images.upcoming}
-                bgColor={'#FF9B9B'}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.card_row}>
-            <TouchableOpacity onPress={() => navigateToOrder(1)}>
-              <Card
-                total={dailyReport?.Total_Active_Orders}
-                // total={20}
-                title={'Pending'}
-                source={images.pending}
-                bgColor={'#CF9EFF'}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigateToOrder(2)}>
-              <Card
-                total={dailyReport?.Total_Complete_Orders}
-                // total={90}
-                title={'Completed'}
-                source={images.completed}
-                bgColor={'#FFA876'}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{height:SIZES.height * 0.02}}/>
+          {allReports === false ? (
+            <View>
+              <View style={styles.card_row}>
+                <Card
+                  total={dailyReport?.Today_All_Orders}
+                  // total={90}
+                  title={'Total'}
+                  source={images.active}
+                  bgColor={'#838EFF'}
+                />
+
+                <TouchableOpacity onPress={() => navigateToOrder(0)}>
+                  <Card
+                    total={dailyReport?.Total_Pending_Orders}
+                    // total={25}
+                    // title={'New Order'}
+                    title={'Active'}
+                    source={images.upcoming}
+                    bgColor={'#FF9B9B'}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.card_row}>
+                <TouchableOpacity onPress={() => navigateToOrder(1)}>
+                  <Card
+                    total={dailyReport?.Total_Active_Orders}
+                    // total={20}
+                    title={'Pending'}
+                    source={images.pending}
+                    bgColor={'#CF9EFF'}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigateToOrder(2)}>
+                  <Card
+                    total={dailyReport?.Total_Complete_Orders}
+                    // total={90}
+                    title={'Completed'}
+                    source={images.completed}
+                    bgColor={'#FFA876'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <View>
+              <View style={styles.card_row}>
+                <Card
+                  total={allReport?.total_bookings}
+                  // total={90}
+                  title={'Total'}
+                  source={images.active}
+                  bgColor={'#838EFF'}
+                />
+
+                <TouchableOpacity>
+                  <Card
+                    total={allReport?.pending_bookings}
+                    // total={25}
+                    // title={'New Order'}
+                    title={'Active'}
+                    source={images.upcoming}
+                    bgColor={'#FF9B9B'}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.card_row}>
+                <TouchableOpacity>
+                  <Card
+                    total={allReport?.today_bookings}
+                    // total={20}
+                    title={'Pending'}
+                    source={images.pending}
+                    bgColor={'#CF9EFF'}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Card
+                    total={allReport?.completed_bookings}
+                    // total={90}
+                    title={'Completed'}
+                    source={images.completed}
+                    bgColor={'#FFA876'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          <View style={{height: SIZES.height * 0.02}} />
         </View>
       </ScrollView>
     </View>
@@ -292,10 +368,12 @@ const mapStateToProps = state => ({
   loading: state.home.loading,
   userData: state.auth.userData,
   dailyReport: state.home.dailyReport,
+  allReport: state.home.allReport,
 });
 
 const mapDispatchToProps = {
   GetDailyReport,
+  GetAllReport,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

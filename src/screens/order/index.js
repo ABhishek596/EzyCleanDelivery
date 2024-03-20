@@ -52,7 +52,9 @@ const Order = ({
   const [objData, setobjData] = useState(null);
   // console.log('first', objData.order_id);
   // console.log('first', objData.status);
-  console.log('firstcompletedOrder', JSON.stringify(completedOrder));
+  // console.log('firstcompletedOrder', JSON.stringify(completedOrder));assignOrder
+  // console.log('firstassignOrderOrder', JSON.stringify(assignOrder));
+
   const isFocus = useIsFocused();
   const isFocused = useIsFocused();
 
@@ -202,7 +204,7 @@ const Order = ({
   //   });
   // };
 
-  console.log('stattttttttttt', JSON.stringify(assignOrder.Address_Details));   //temp clos
+  // console.log('stattttttttttt', JSON.stringify(assignOrder.Address_Details)); //temp clos
 
   const handleTabChange = newActive => {
     setActive(newActive);
@@ -265,6 +267,8 @@ const Order = ({
   //     handleTabChange(setActiveFunctionb);
   //   }
   // }, []);
+
+  const resAssignOrder = assignOrder.sort((a, b) => a.id - b.id);
 
   return (
     <View style={globalStyles.container}>
@@ -437,36 +441,37 @@ const Order = ({
             <Text style={styles.subtitle}>Customer Name</Text>
           </View>
         </LinearGradient>
-        {assignOrder && completedOrder ? (
+        {resAssignOrder && completedOrder ? (
           <Text style={styles.mainheading}>Ready to Pickup</Text>
         ) : null}
 
         {active === 0 && (
           <View>
-            {assignOrder ? (
+            {resAssignOrder ? (
               <FlatList
-                data={assignOrder}
+                data={resAssignOrder}
                 renderItem={({item, index}) => {
                   let address = item
                     ? `${item?.Address_Details?.[0]?.address} ${item?.Address_Details?.[0]?.locality} ${item?.Address_Details?.[0]?.city} ${item?.Address_Details?.[0]?.state} ${item?.Address_Details?.[0]?.country} ${item?.Address_Details?.[0]?.pincode}`
                     : null;
-                  //   console.log(item, 'item ');
+                  // console.log('item nmnmnmnnmnmmmfgfggfgg', item);
                   let quantity = 0;
 
                   item.Item_Details?.forEach(element => {
                     quantity += element.qty;
                   });
-                  if (assignOrder) {
+                  if (resAssignOrder) {
                     return (
                       <View
-                        onPress={() =>
-                          navigation.navigate('PendingOrder', {
-                            // item,
-                            // address,
-                            // quantity,
-                            // orderStatusList,
-                          })
-                        }>
+                      // onPress={() =>
+                      //   navigation.navigate('PendingOrder', {
+                      //     // item,
+                      //     // address,
+                      //     // quantity,
+                      //     // orderStatusList,
+                      //   })
+                      // }
+                      >
                         <View style={{marginVertical: 10}}>
                           <LinearGradient
                             colors={['#935DB7', '#6B56B1']}
@@ -485,7 +490,8 @@ const Order = ({
                               style={[
                                 styles.subtitle,
                                 {fontSize: SIZES.width * 0.05},
-                              ]}>
+                              ]}
+                              onPress={() => navigation.navigate('MapScreen')}>
                               View
                             </Text>
                           </LinearGradient>
@@ -504,7 +510,7 @@ const Order = ({
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Pickup Time</Text>
                                 <Text style={styles.subText}>
-                                {item.pickup_date.slice(11,16)}
+                                  {item.pickup_date.slice(11, 16)}
                                   {/* 04/04/2023 */}
                                 </Text>
                               </View>
@@ -519,15 +525,13 @@ const Order = ({
                                 </Text>
                               </View>
                               <View style={styles.horizontalLine} />
-
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Quantity</Text>
                                 <Text style={styles.subText}>
-                                  {item.total_items} Items
+                                  {item.Item_Details.length} Items
                                 </Text>
                               </View>
                               <View style={styles.horizontalLine} />
-
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Total Amount</Text>
                                 <Text style={styles.subText}>
@@ -535,10 +539,18 @@ const Order = ({
                                 </Text>
                               </View>
                               <View style={[styles.horizontalLineEnd]} />
+
                               <Button1
-                                onPress={() =>
-                                  navigation.navigate('OrderDetails')
-                                }
+                                onPress={() => {
+                                  let data = {
+                                    order_id: item.order_id,
+                                    status: 2,
+                                  };
+                                  if (item.status === 1) {
+                                    // navigation.navigate('OrderDetails');
+                                    UpdateOrderStatus(data);
+                                  }
+                                }}
                                 style={{
                                   borderRadius: 50,
                                   width: 170,
@@ -549,7 +561,11 @@ const Order = ({
                                   width: 170,
                                   marginVertical: 20,
                                 }}>
-                                Mark Pickup Up
+                                {item.status === 1
+                                  ? 'Mark Pickup Up'
+                                  : item.status === 2
+                                  ? 'Processing'
+                                  : 'Unknown Status'}
                               </Button1>
                             </View>
                           </View>
@@ -587,9 +603,9 @@ const Order = ({
                   let address = item
                     ? `${item?.Address_Details?.[0]?.address} ${item?.Address_Details?.[0]?.locality} ${item?.Address_Details?.[0]?.city} ${item?.Address_Details?.[0]?.state} ${item?.Address_Details?.[0]?.country} ${item?.Address_Details?.[0]?.pincode}`
                     : null;
-                    console.log(item, 'item ');
+                  console.log(item, 'item ');
                   let quantity = 0;
-                  console.log('item--address ',item.Address_Details[0].address);
+                  // console.log('item--address ',item.Address_Details[0].address);
                   item.Item_Details?.forEach(element => {
                     quantity += element.qty;
                   });
@@ -640,7 +656,7 @@ const Order = ({
                               <View style={styles.textBox}>
                                 <Text style={styles.text}>Pickup Time</Text>
                                 <Text style={styles.subText}>
-                                  {item.pickup_date.slice(11,16)}
+                                  {item.pickup_date.slice(11, 16)}
                                 </Text>
                               </View>
                               <View style={styles.horizontalLine} />
@@ -648,9 +664,7 @@ const Order = ({
                                 <Text style={styles.text}>
                                   Delivery Address
                                 </Text>
-                                <Text style={styles.subText}>
-                                  {address}
-                                </Text>
+                                <Text style={styles.subText}>{address}</Text>
                               </View>
                               <View style={styles.horizontalLine} />
 

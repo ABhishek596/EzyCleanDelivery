@@ -216,7 +216,7 @@ const PendingOrder = ({
               <View style={styles.textBox}>
                 <Text style={styles.text}>Pickup Date</Text>
                 <Text style={styles.subText}>
-                  {formatDate(item.pickup_date)}
+                  {/* {formatDate(item.pickup_date)} */}
                 </Text>
               </View>
               <View style={styles.horizontalLine} />

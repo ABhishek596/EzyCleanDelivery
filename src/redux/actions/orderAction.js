@@ -114,9 +114,9 @@ export const GetCompletedOrder = cb => async dispatch => {
 
 export const UpdateOrderStatus =
   (postData, navigation, cb) => async dispatch => {
-    const userId = await AsyncStorage.getItem('@USER_ID');
+    // const userId = await AsyncStorage.getItem('@USER_ID');
     // console.log("get assign order userid : ", userId)
-    console.log('get assign order id : ', userId, postData);
+    // console.log('get assign order id : ', userId, postData);
 
     postData = await objectToFormData(postData);
 
@@ -126,13 +126,13 @@ export const UpdateOrderStatus =
       payload: true,
     }); //driver_update_status?did=${userId}&orderid=${orderId}
     http
-      .post(`driver_update_status`, postData, formDataHeader)
+      .post(`order-status-change`, postData, formDataHeader)
       .then(async response => {
-        if (response.data?.response) {
+        if (response.data?.status) {
           dispatch(GetAssignOrder());
           dispatch(GetCompletedOrder());
           cb && cb(false);
-          navigation.goBack();
+          // navigation.goBack();
           RNToasty.Success({
             title: response.data.message,
             duration: 2,

@@ -115,9 +115,9 @@ export default StyleSheet.create({
     // marginTop: -2,
   },
   order_box: {
-    width: SIZES.width*1,
+    width: SIZES.width,
     backgroundColor: COLORS.white,
-    // marginTop: SIZES.height * -0.045,
+    marginTop: SIZES.height * -0.045,
     // borderRadius: SIZES.width * 0.04,
     alignSelf: 'center',
     borderTopLeftRadius:  SIZES.width * 0.09,

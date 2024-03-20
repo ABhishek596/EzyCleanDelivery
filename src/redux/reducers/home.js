@@ -1,36 +1,47 @@
-import {  CURRENT_LAT_LONG, DAILY_REPORT, EARNING, LOADING, } from "../types";
+import {
+  CURRENT_LAT_LONG,
+  DAILY_REPORT,
+  EARNING,
+  LOADING,
+  ALL_REPORT,
+} from '../types';
 
 const initialState = {
-    earning: null,
-    dailyReport: null,
-    loading: false,
-    currentLatLong: null,
-}
+  earning: null,
+  dailyReport: null,
+  loading: false,
+  currentLatLong: null,
+  allReport: null,
+};
 
 export default (state = initialState, action) => {
-    switch (action.type) {
-       
-        case EARNING:
-            return {
-                ...state,
-                earning: action.payload
-            }
-        case DAILY_REPORT:
-            return {
-                ...state,
-                dailyReport: action.payload
-            }
-        case LOADING:
-            return {
-                ...state,
-                loading: action.payload
-            }
-            case CURRENT_LAT_LONG:
-                return {
-                    ...state,
-                    currentLatLong: action.payload
-                }
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case EARNING:
+      return {
+        ...state,
+        earning: action.payload,
+      };
+    case DAILY_REPORT:
+      return {
+        ...state,
+        dailyReport: action.payload,
+      };
+    case ALL_REPORT:
+      return {
+        ...state,
+        allReport: action.payload,
+      };
+    case LOADING:
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case CURRENT_LAT_LONG:
+      return {
+        ...state,
+        currentLatLong: action.payload,
+      };
+    default:
+      return state;
+  }
+};

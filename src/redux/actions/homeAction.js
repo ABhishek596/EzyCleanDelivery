@@ -1,6 +1,6 @@
 import { RNToasty } from "react-native-toasty";
 import http from "../../services/api";
-import {  DAILY_REPORT, EARNING, LOADING, } from "../types";
+import {  DAILY_REPORT, EARNING, LOADING, ALL_REPORT } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -17,6 +17,56 @@ export const GetDailyReport = (cb) => async dispatch => {
                 dispatch({
                     type: DAILY_REPORT,
                     payload: response.data.data,
+                })
+                // RNToasty.Success({
+                //     title: .response.data.message,
+                //     duration: 2,
+                // });
+                dispatch({
+                    type: LOADING,
+                    payload: false,
+                });
+                cb && cb(false)
+                
+            } else {
+                cb && cb(false)
+                // RNToasty.Info({
+                //     title: response.data.message,
+                //     duration: 2,
+                // });
+                dispatch({
+                    type: LOADING,
+                    payload: false,
+                });
+            }
+        })
+        .catch(error => {
+            cb && cb(false)
+            dispatch({
+                type: LOADING,
+                payload: false,
+            });
+            // console.log("user data error : ", error.response.data)
+            // RNToasty.Error({
+            //     title: error.response.data.message,
+            //     duration: 2,
+            // });
+        })
+};
+
+export const GetAllReport = (cb) => async dispatch => {
+    const userId = await AsyncStorage.getItem("@USER_ID")
+    cb && cb(true)
+    dispatch({
+        type: LOADING,
+        payload: true,
+    });
+    http.post(`delivery/dashboard-data?id=${userId}`)
+        .then(async response => {
+            if (response.data?.result) {
+                dispatch({
+                    type: ALL_REPORT,
+                    payload: response.data.result,
                 })
                 // RNToasty.Success({
                 //     title: .response.data.message,
