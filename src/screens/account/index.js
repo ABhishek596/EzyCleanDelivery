@@ -139,11 +139,11 @@ const Account = ({
               onPress={() => navigation.navigate('UploadDocument')}>
               Upload Proofs
             </ScreenNavigation>
-            <ScreenNavigation
+            {/* <ScreenNavigation
               iconName={'appstore'}
               onPress={() => navigation.navigate('AppSettings')}>
               App Settings
-            </ScreenNavigation>
+            </ScreenNavigation> */}
             <ScreenNavigation
               iconName={'logout'}
               // onPress={LogoutApi}

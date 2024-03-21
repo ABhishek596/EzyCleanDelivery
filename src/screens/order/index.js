@@ -268,7 +268,7 @@ const Order = ({
   //   }
   // }, []);
 
-  const resAssignOrder = assignOrder.sort((a, b) => a.id - b.id);
+  // const resAssignOrder = assignOrder.sort((a, b) => b.id - a.id);
 
   return (
     <View style={globalStyles.container}>
@@ -441,15 +441,15 @@ const Order = ({
             <Text style={styles.subtitle}>Customer Name</Text>
           </View>
         </LinearGradient>
-        {resAssignOrder && completedOrder ? (
+        {assignOrder && completedOrder ? (
           <Text style={styles.mainheading}>Ready to Pickup</Text>
         ) : null}
 
         {active === 0 && (
           <View>
-            {resAssignOrder ? (
+            {assignOrder ? (
               <FlatList
-                data={resAssignOrder}
+                data={assignOrder}
                 renderItem={({item, index}) => {
                   let address = item
                     ? `${item?.Address_Details?.[0]?.address} ${item?.Address_Details?.[0]?.locality} ${item?.Address_Details?.[0]?.city} ${item?.Address_Details?.[0]?.state} ${item?.Address_Details?.[0]?.country} ${item?.Address_Details?.[0]?.pincode}`
@@ -460,7 +460,7 @@ const Order = ({
                   item.Item_Details?.forEach(element => {
                     quantity += element.qty;
                   });
-                  if (resAssignOrder) {
+                  if (assignOrder) {
                     return (
                       <View
                       // onPress={() =>
@@ -542,13 +542,25 @@ const Order = ({
 
                               <Button1
                                 onPress={() => {
-                                  let data = {
-                                    order_id: item.order_id,
-                                    status: 2,
-                                  };
-                                  if (item.status === 1) {
-                                    // navigation.navigate('OrderDetails');
+                                  if (item.status === 2) {
+                                    let data = {
+                                      order_id: item.id,
+                                      status: 3,
+                                    };
                                     UpdateOrderStatus(data);
+                                    // if (item.status === 2) {
+                                    //   // navigation.navigate('OrderDetails');
+                                    //   UpdateOrderStatus(data);
+                                    // }
+                                  } else if (item.status === 3) {
+                                    let data1 = {
+                                      order_id: item.id,
+                                      status: 4,
+                                    };
+                                    UpdateOrderStatus(data1);
+                                    navigation.navigate('OrderDetails', {data:item});
+                                  } else {
+                                    navigation.navigate('OrderDetails', {data:item});
                                   }
                                 }}
                                 style={{
@@ -561,11 +573,11 @@ const Order = ({
                                   width: 170,
                                   marginVertical: 20,
                                 }}>
-                                {item.status === 1
+                                {item.status === 2
                                   ? 'Mark Pickup Up'
-                                  : item.status === 2
-                                  ? 'Processing'
-                                  : 'Unknown Status'}
+                                  : item.status === 3
+                                  ? 'On the way to pickup'
+                                  : 'Processing'}
                               </Button1>
                             </View>
                           </View>

@@ -126,7 +126,7 @@ export const UpdateOrderStatus =
       payload: true,
     }); //driver_update_status?did=${userId}&orderid=${orderId}
     http
-      .post(`order-status-change`, postData, formDataHeader)
+      .post(`delivery/order-status-change`, postData, formDataHeader)
       .then(async response => {
         if (response.data?.status) {
           dispatch(GetAssignOrder());

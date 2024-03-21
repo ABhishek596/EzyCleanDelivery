@@ -6,6 +6,7 @@ import {
   Linking,
   TouchableOpacity,
   StatusBar,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -16,13 +17,25 @@ import globalStyles from '../../styles/globalStyles';
 import Icons from '../../component/Icons';
 import Button1 from '../../component/button/Button1';
 import LinearGradient from 'react-native-linear-gradient';
-
-const OrderDetails = ({userData, navigation, route}) => {
+import {
+  UpdateOrderStatus,
+  GetAssignOrder,
+} from '../../redux/actions/orderAction';
+const OrderDetails = ({
+  userData,
+  navigation,
+  route,
+  UpdateOrderStatus,
+  assignOrder,
+}) => {
   const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(false);
-  //   let item = route.params?.data;
+  let item = route.params?.data;
+
   //   let address = `${item?.Address_Details?.[0].address} ${item?.Address_Details?.[0].locality} ${item?.Address_Details?.[0].city} ${item?.Address_Details?.[0].state} ${item?.Address_Details?.[0].country} ${item?.Address_Details?.[0].pincode}`;
-  //   // console.log("route data order details : ", item)
+  console.log('route data order details : ', item);
+
+  // console.log('final assign order details : ', assignOrder);
   //   let quantity = 0;
   //   item.Item_Details?.forEach(element => {
   //     quantity += element.qty;
@@ -45,10 +58,7 @@ const OrderDetails = ({userData, navigation, route}) => {
             onPress={() => navigation?.goBack()}>
             <Icons name={'back'} size={22} color={COLORS.white} />
           </TouchableOpacity>
-          <Text style={styles.title}>
-            Order #Dty0010C5
-            {/* {item?.order_id} */}
-          </Text>
+          <Text style={styles.title}>Order {item?.order_id}</Text>
         </ImageBackground>
       </View>
 
@@ -223,7 +233,7 @@ const OrderDetails = ({userData, navigation, route}) => {
                 <Text
                   style={[styles.cus_name1, {marginLeft: SIZES.width * 0.03}]}>
                   {/* {item.Customer_Details?.customer_name} */}
-                  Order No: #Dty0010C5
+                  Order No: {item.order_id}
                 </Text>
                 {/* <Text style={[styles.subtitle, {fontSize: SIZES.width * 0.05}]}>
                   View
@@ -265,7 +275,25 @@ const OrderDetails = ({userData, navigation, route}) => {
         )}
         {active === 0 && (
           <Button1
-            onPress={() => navigation.navigate('PaymentSuccess')}
+            // onPress={() => navigation.navigate('PaymentSuccess')}
+            onPress={() => {
+              if (item.status === 6) {
+                let data = {
+                  order_id: item.id,
+                  status: 7,
+                };
+                UpdateOrderStatus(data);
+                Alert.alert('Order completed Successfully');
+                // if (item.status === 2) {
+                // navigation.navigate('PaymentSuccess');
+                //   UpdateOrderStatus(data);
+                // }
+              } else if (item.status === 7) {
+                Alert.alert('Order completed Successfully');
+              } else {
+                Alert.alert('Order in Progress');
+              }
+            }}
             style={{
               borderRadius: 50,
               //    width: 170,
@@ -276,13 +304,38 @@ const OrderDetails = ({userData, navigation, route}) => {
         )}
         {active === 1 && (
           <Button1
-            onPress={() => navigation.navigate('NewOrderRequest')}
+            // onPress={() => navigation.navigate('NewOrderRequest')}
+            onPress={() => {
+              if (item.status === 4) {
+                let data = {
+                  order_id: item.id,
+                  status: 5,
+                };
+                UpdateOrderStatus(data);
+                // if (item.status === 2) {
+                //   // navigation.navigate('OrderDetails');
+                //   UpdateOrderStatus(data);
+                // }
+              } else if (item.status === 5) {
+                let data1 = {
+                  order_id: item.id,
+                  status: 6,
+                };
+                UpdateOrderStatus(data1);
+              }
+            }}
             style={{
               borderRadius: 50,
               //    width: 170,
               marginVertical: 20,
             }}>
-            Mark Picked Up
+            {item.status === 4
+              ? 'Mark Pickup Up'
+              : item.status === 5
+              ? 'Ready to dispatch'
+              : item.status === 6
+              ? 'On the way to deliver'
+              : 'Completed'}
           </Button1>
         )}
       </ScrollView>
@@ -290,15 +343,16 @@ const OrderDetails = ({userData, navigation, route}) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-    userData: state.auth.userData,
-    loading: state.home.loading,
-
-})
+const mapStateToProps = state => ({
+  userData: state.auth.userData,
+  loading: state.home.loading,
+  assignOrder: state.order.assignOrder,
+});
 
 const mapDispatchToProps = {
+  UpdateOrderStatus,
+  GetAssignOrder,
+};
 
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails)
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails);
 // export default OrderDetails;
